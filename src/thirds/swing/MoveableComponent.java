@@ -6,20 +6,22 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Panel extends JPanel
+public class MoveableComponent extends JPanel
 {
-    Timer timer;
-    public Panel()
+    private Timer timer;
+
+    public MoveableComponent()
     {
         super();
     }
 
     public void move(double x, double y, long millis)
     {
-
+        scale(x, y, getWidth(), getHeight(), millis);
     }
 
-    public synchronized void scale(double x, double y, double width, double height, long millis) {
+    public synchronized void scale(double x, double y, double width, double height, long millis)
+    {
         Point startPoint = getLocation();
         Dimension startDimension = getSize();
 
@@ -42,18 +44,18 @@ public class Panel extends JPanel
 
         AtomicInteger currentStep = new AtomicInteger();
 
-        if(timer != null && timer.isRunning())
-                timer.stop();
+        if(timer != null && timer.isRunning()) {
+            timer.stop();
+        }
 
         timer = new Timer(10, e ->
         {
-            if (currentStep.get() < totalSteps)
-            {
+            if(currentStep.get() < totalSteps) {
                 currentStep.getAndIncrement();
 
                 // Calculate the progress as a fraction of total steps
                 double progress = (double) currentStep.get() / totalSteps;
-                double exponentialFactor = Math.pow(progress, 2); // Quadratic (exponential) growth
+                double exponentialFactor = 1 - Math.pow(1 - progress, 2); // Exponential out effect
 
                 // Calculate new position and size
                 int newX = (int) (startPoint.getX() + deltaX * exponentialFactor);
@@ -65,12 +67,20 @@ public class Panel extends JPanel
                 setSize(newWidth, newHeight);
                 setLocation(newX, newY);
 
-                System.out.println(newX + " " + newY + " " + newWidth + " " + newHeight);
-            } else {
+                //System.out.println(newX + " " + newY + " " + newWidth + " " + newHeight);
+            }
+            else {
                 ((Timer) e.getSource()).stop(); // Stop the timer when scaling is complete
             }
         });
 
         timer.start();
+    }
+
+    public void hold()
+    {
+        if(timer != null && timer.isRunning()) {
+            timer.stop();
+        }
     }
 }

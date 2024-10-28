@@ -1,4 +1,4 @@
-package thirds.place;
+package thirds.user;
 
 public class Rating
 {

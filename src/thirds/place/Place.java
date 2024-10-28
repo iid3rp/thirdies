@@ -1,6 +1,7 @@
 package thirds.place;
 
 import thirds.lang.Vec2;
+import thirds.user.Rating;
 import thirds.util.LinkList;
 
 import java.awt.image.BufferedImage;
