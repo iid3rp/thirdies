@@ -9,13 +9,71 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MoveableComponent extends JPanel
 {
     private Timer timer;
+    private int currentX;
+    private int currentY;
+    private long lastTime;
+    public double velocityX;
+    public double velocityY;
 
     public MoveableComponent()
     {
         super();
     }
 
-    public void move(double x, double y, long millis)
+
+
+    public synchronized void setMotion(int x, int y, long currentTime)
+    {
+        currentX = x;
+        currentY = y;
+        lastTime = currentTime;
+    }
+
+    public synchronized void slipMotion()
+    {
+        // Deceleration factor for the slippery effect
+        final double deceleration = 0.95;
+
+        timer = new Timer(10, e -> {
+
+            // Calculate the new position based on velocity
+            int newX = getX() + (int) velocityX;
+            int newY = getY() + (int) velocityY;
+
+            Dimension d = getParent().getSize();
+            // Boundary checks for the panel within the parent
+            if (newX < 0) {
+                newX = 0;
+                velocityX = -velocityX * deceleration; // Bounce back slightly if needed
+            } else if (newX + getWidth() > d.getWidth()) {
+                newX = (int) (d.getWidth() - getWidth());
+                velocityX = -velocityX * deceleration;
+            }
+
+            if (newY < 0) {
+                newY = 0;
+                velocityY = -velocityY * deceleration;
+            } else if (newY + getHeight() > getParent().getHeight()) {
+                newY = (int) (d.getHeight() - getHeight());
+                velocityY = -velocityY * deceleration;
+            }
+            // Apply velocity to position
+            setLocation(newX, newY);
+
+            // Apply deceleration to slow down over time
+            velocityX *= deceleration;
+            velocityY *= deceleration;
+
+            // Stop when velocity is very low
+            if (Math.abs(velocityX) < 0.5 && Math.abs(velocityY) < 0.5) {
+                timer.stop();
+            }
+
+        });
+        timer.start();
+    }
+
+    public synchronized void move(double x, double y, long millis)
     {
         scale(x, y, getWidth(), getHeight(), millis);
     }
@@ -82,5 +140,20 @@ public class MoveableComponent extends JPanel
         if(timer != null && timer.isRunning()) {
             timer.stop();
         }
+    }
+
+    public int getCurrentX()
+    {
+        return currentX;
+    }
+
+    public int getCurrentY()
+    {
+        return currentY;
+    }
+
+    public long getLastTime()
+    {
+        return lastTime;
     }
 }
