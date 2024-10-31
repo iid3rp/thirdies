@@ -20,8 +20,6 @@ public class MoveableComponent extends JPanel
         super();
     }
 
-
-
     public synchronized void setMotion(int x, int y, long currentTime)
     {
         currentX = x;
@@ -31,20 +29,17 @@ public class MoveableComponent extends JPanel
 
     public synchronized void slipMotion()
     {
-        // Deceleration factor for the slippery effect
         final double deceleration = 0.95;
 
         timer = new Timer(10, e -> {
 
-            // Calculate the new position based on velocity
             int newX = getX() + (int) velocityX;
             int newY = getY() + (int) velocityY;
 
             Dimension d = getParent().getSize();
-            // Boundary checks for the panel within the parent
             if (newX < 0) {
                 newX = 0;
-                velocityX = -velocityX * deceleration; // Bounce back slightly if needed
+                velocityX = -velocityX * deceleration;
             } else if (newX + getWidth() > d.getWidth()) {
                 newX = (int) (d.getWidth() - getWidth());
                 velocityX = -velocityX * deceleration;

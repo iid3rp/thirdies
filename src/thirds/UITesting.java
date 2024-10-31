@@ -1,6 +1,7 @@
 package thirds;
 
 import thirds.swing.MoveableComponent;
+import thirds.swing.ScrollPane;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UITesting
 {
-    public static Point offset;
     public static Point panelOffset;
     public static boolean isDragging;
     public static Point currentPanelPoint;
@@ -46,7 +46,6 @@ public class UITesting
             public void mousePressed(MouseEvent e)
             {
                 isDragging = true;
-                offset = e.getPoint();
                 blackBox.setMotion(e.getXOnScreen(), e.getYOnScreen(), System.currentTimeMillis());
                 blackBox.hold();
             }
@@ -98,69 +97,39 @@ public class UITesting
 
                     blackBox.setMotion(currentX, currentY, currentTime);
 
-//                    currentPanelPoint = blackBox.getLocation();
-//                    panelOffset = blackBox.getParent().getLocationOnScreen();
-//                    Point mouseLocation = e.getLocationOnScreen();
-//                    int newX = mouseLocation.x - panelOffset.x - offset.x;
-//                    int newY = mouseLocation.y - panelOffset.y - offset.y;
-//
-//                    blackBox.setLocation(newX, newY);
-//                    System.out.println(newX + " " + newY);
-
                 }
             }
 
 
         });
 
-        panel.add(blackBox);
+        //panel.add(blackBox);
 
         JLabel brat = getjLabel();
 
 
         //panel.add(brat);
 
-        JPanel scrollPanel = new JPanel();
-        scrollPanel.setLayout(null);
-        scrollPanel.setBackground(Color.white);
-        scrollPanel.setLocation(0, 0);
-        scrollPanel.setSize(200, 200);
-
-        JPanel scroller = new JPanel();
-        scroller.setLayout(null);
-        scroller.setLocation(0, 0);
-        scroller.setSize(200, 2000);
+        ScrollPane pane = new ScrollPane();
+        pane.setSize(500, 500);
+        pane.setBackground(Color.white);
+        pane.setLocation(0, 0);
+        pane.setContainerSize(1000, 2000);
+        pane.setContainerLocation(0, 0);
 
         for(int i = 0; i < 50; i++)
         {
             JLabel label = new JLabel();
-            label.setText("text #" + i);
+            label.setText("this is a long label with a text number with " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i);
             label.setLayout(null);
             label.setLocation(0, i * 40);
             label.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
-            label.setSize(200, 40);
-            label.setForeground(Color.black);
-            scroller.add(label);
+            label.setSize(1000, 40);
+            label.setForeground(new Color(135, 135, 135));
+            pane.addComponentToContainer(label);
         }
 
-        scrollPanel.add(scroller);
-
-        panel.add(scrollPanel);
-
-        scrollPanel.addMouseWheelListener(e ->
-        {
-            Point currentPoint = scroller.getLocation();
-            double wheelRotation = e.getPreciseWheelRotation();
-            int newY = (int) (currentPoint.y - (wheelRotation * 10));
-
-            int minY = -scroller.getHeight() + scroller.getParent().getHeight();
-            int maxY = 0;
-
-            newY = Math.min(maxY, Math.max(minY, newY));
-
-            scroller.setLocation(currentPoint.x, newY);
-        });
-
+        panel.add(pane);
         // last
         frame.setVisible(true);
     }
