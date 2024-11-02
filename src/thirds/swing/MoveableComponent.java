@@ -17,7 +17,7 @@ public class MoveableComponent extends JPanel
 
     public MoveableComponent()
     {
-        super();
+        super(null);
     }
 
     public synchronized void setMotion(int x, int y, long currentTime)

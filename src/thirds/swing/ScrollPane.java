@@ -11,9 +11,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 
-public class ScrollPane extends JPanel
+public class ScrollPane extends MoveableComponent
 {
-    private JPanel container;
+    private MoveableComponent container;
     private Timer timer;
     private int currentX;
     private int currentY;
@@ -26,8 +26,8 @@ public class ScrollPane extends JPanel
 
     public ScrollPane()
     {
-        super(null);
-        container = new JPanel(null);
+        super();
+        container = new MoveableComponent();
         add(container);
         addMouseWheelListener(mwl);
         setTouchscreen(true);
@@ -77,17 +77,17 @@ public class ScrollPane extends JPanel
         public void mouseMoved(MouseEvent e) {}
     };
 
-    private long getLastTime()
+    public long getLastTime()
     {
         return lastTime;
     }
 
-    private int getCurrentY()
+    public int getCurrentY()
     {
         return currentY;
     }
 
-    private int getCurrentX()
+    public int getCurrentX()
     {
         return currentX;
     }
@@ -198,7 +198,7 @@ public class ScrollPane extends JPanel
         container.setLocation(x, y);
     }
 
-    public void setContainerPanel(JPanel panel)
+    public void setContainerPanel(MoveableComponent panel)
     {
         remove(container);
         container = panel;

@@ -1,6 +1,7 @@
 package thirds;
 
 import thirds.io.Resources;
+import thirds.swing.MoveableComponent;
 import thirds.swing.ScrollPane;
 
 import javax.imageio.ImageIO;
@@ -9,7 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MapApplication extends JFrame
 {
@@ -33,7 +37,7 @@ public class MapApplication extends JFrame
     private ScrollPane createScrollPane()
     {
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setSize(1420, 1200);
+        scrollPane.setSize(780, 720);
 
         BufferedImage image;
         try{
@@ -44,7 +48,7 @@ public class MapApplication extends JFrame
             throw new RuntimeException(e);
         }
         BufferedImage finalImage = image;
-        JPanel panel = new JPanel()
+        MoveableComponent panel = new MoveableComponent()
         {
             @Override
             public void paintComponent(Graphics g)
@@ -55,6 +59,23 @@ public class MapApplication extends JFrame
         panel.setSize(image.getWidth(), image.getHeight());
 
         scrollPane.setContainerPanel(panel);
+        scrollPane.addMouseListener(new MouseAdapter()
+        {
+            AtomicBoolean bool = new AtomicBoolean(true);
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if(bool.get()) {
+                    scrollPane.scale(0, 0,1280,720, 200);
+                    bool.set(false);
+                }
+                else
+                {
+                    scrollPane.scale(0, 0,780,720, 200);
+                    bool.set(true);
+                }
+            }
+        });
         return scrollPane;
     }
 
@@ -62,13 +83,13 @@ public class MapApplication extends JFrame
     {
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        panel.setSize(1920, 1200);
+        panel.setSize(1280, 720);
         return panel;
     }
 
     private void initializeComponent()
     {
-        setSize(1920, 1200);
+        setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setUndecorated(true);
