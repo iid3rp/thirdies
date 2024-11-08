@@ -112,10 +112,29 @@ public class UITesting
 
         ScrollPane pane = new ScrollPane();
         pane.setSize(500, 500);
-        pane.setBackground(Color.white);
+        pane.setBackground(new Color(0, 0,0, 0));
         pane.setLocation(0, 0);
+        pane.setContainerBackground(new Color(255, 255, 255, 255));
         pane.setContainerSize(1000, 2000);
         pane.setContainerLocation(0, 0);
+
+        JLabel labe = new JLabel();
+        labe.setLayout(null);
+        labe.setLocation(0, 0);
+        labe.setText("Hello World!");
+        labe.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
+        labe.setForeground(Color.black);
+        labe.setSize(200, 40);
+        labe.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                System.out.println("Hello World has been clicked!");
+            }
+        });
+
+        pane.glassPane.add(labe);
 
         for(int i = 0; i < 50; i++)
         {

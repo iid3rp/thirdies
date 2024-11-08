@@ -1,33 +1,39 @@
 package thirds.place;
 
 import thirds.lang.Vec2;
-import thirds.user.Rating;
+import thirds.user.Client;
+import thirds.user.Comment;
 import thirds.util.LinkList;
 
 import java.awt.image.BufferedImage;
+import java.io.Serial;
+import java.io.Serializable;
 
-public abstract class Place
+public abstract class Place implements Comparable<Place>, Serializable
 {
+    @Serial
+    private static final long serialVersionUID = -1883881532462869784L;
+
     // statics; the information about
     // the places and stuff are put here
     public static final int
-        COFFEE_SHOP         = 0x01,
-        PARK                = 0x02,
-        HOTEL               = 0x03,
-        INTERNET_CAFE       = 0x04,
-        CONVENIENCE_STORE   = 0x05,
-        LIBRARY             = 0x06,
-        BAR                 = 0x07,
-        COMMUNITY           = 0x08,
-        SOCIAL              = 0x09,
-        STUDY               = 0x0A,
-        GYM                 = 0x0B,
-        IT_SPACE            = 0x0C,
-        EATERY              = 0x0D,
-        MALL                = 0x0E,
-        SHOPPING            = 0x0F,
-        MULTIPURPOSE        = 0x10,
-        DEFAULT_PLACE       = 0x00;
+            COFFEE_SHOP = 0x01,
+            PARK = 0x02,
+            HOTEL = 0x03,
+            INTERNET_CAFE = 0x04,
+            CONVENIENCE_STORE = 0x05,
+            LIBRARY = 0x06,
+            BAR = 0x07,
+            COMMUNITY = 0x08,
+            SOCIAL = 0x09,
+            STUDY = 0x0A,
+            GYM = 0x0B,
+            IT_SPACE = 0x0C,
+            EATERY = 0x0D,
+            MALL = 0x0E,
+            SHOPPING = 0x0F,
+            MULTIPURPOSE = 0x10,
+            DEFAULT_PLACE = 0x00;
 
     // the basics
     private int type;
@@ -41,15 +47,11 @@ public abstract class Place
     private int restroomCount;
     private boolean isAirConditioned;
     private boolean wifiAvailable;
-    private int noiseLevel;
-    private int lightLevel;
-    private boolean isIndoor;
-    private boolean isOutdoor;
     private boolean ageRange;
     private int capacity;
 
     // other miscellaneous things
-    private LinkList<Rating> ratings;
+    private LinkList<Comment> comments;
     LinkList<String> tags;
     LinkList<BufferedImage> images;
 
@@ -61,7 +63,7 @@ public abstract class Place
         this.type = id;
         name = address = desc = "";
         tags = new LinkList<>();
-        ratings = new LinkList<>();
+        comments = new LinkList<>();
         images = new LinkList<>();
         location = new Vec2();
     }
@@ -119,8 +121,16 @@ public abstract class Place
     public void addTags(String tag)
     {
         String[] tags = tag.split(" ");
-        for(String s : tags)
+        for(String s : tags) {
             this.tags.add(s);
+        }
+    }
+
+    public double getLengthFromLocation()
+    {
+        double dx = location.x - Client.currentLocation().x;
+        double dy = location.y - Client.currentLocation().y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     public Vec2 getPriceRange()
@@ -163,46 +173,6 @@ public abstract class Place
         this.wifiAvailable = wifiAvailable;
     }
 
-    public int getNoiseLevel()
-    {
-        return noiseLevel;
-    }
-
-    public void setNoiseLevel(int noiseLevel)
-    {
-        this.noiseLevel = noiseLevel;
-    }
-
-    public int getLightLevel()
-    {
-        return lightLevel;
-    }
-
-    public void setLightLevel(int lightLevel)
-    {
-        this.lightLevel = lightLevel;
-    }
-
-    public boolean isIndoor()
-    {
-        return isIndoor;
-    }
-
-    public void setIndoor(boolean indoor)
-    {
-        isIndoor = indoor;
-    }
-
-    public boolean isOutdoor()
-    {
-        return isOutdoor;
-    }
-
-    public void setOutdoor(boolean outdoor)
-    {
-        isOutdoor = outdoor;
-    }
-
     public boolean isAgeRange()
     {
         return ageRange;
@@ -223,14 +193,14 @@ public abstract class Place
         this.capacity = capacity;
     }
 
-    public LinkList<Rating> getRatings()
+    public LinkList<Comment> getComments()
     {
-        return ratings;
+        return comments;
     }
 
-    public void setRatings(LinkList<Rating> ratings)
+    public void setRatings(LinkList<Comment> ratings)
     {
-        this.ratings = ratings;
+        this.comments = ratings;
     }
 
     public void addImage(BufferedImage image)
@@ -238,9 +208,9 @@ public abstract class Place
         images.add(image);
     }
 
-    public void addRating(Rating rating)
+    public void addRating(Comment rating)
     {
-        ratings.add(rating);
+        comments.add(rating);
     }
 
     public void addTag(String tag)

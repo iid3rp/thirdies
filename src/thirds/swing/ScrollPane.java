@@ -14,6 +14,7 @@ import java.awt.event.MouseWheelListener;
 public class ScrollPane extends MoveableComponent
 {
     private MoveableComponent container;
+    public JPanel glassPane;
     private Timer timer;
     private int currentX;
     private int currentY;
@@ -28,6 +29,10 @@ public class ScrollPane extends MoveableComponent
     {
         super();
         container = new MoveableComponent();
+        container.setBackground(Color.WHITE);
+        glassPane = new JPanel(null);
+        glassPane.setBackground(new Color(0, 0, 0, 0));
+        add(glassPane);
         add(container);
         addMouseWheelListener(mwl);
         setTouchscreen(true);
@@ -70,12 +75,20 @@ public class ScrollPane extends MoveableComponent
                 // Update container position and record the new current position
                 container.setLocation(newX, newY);
                 setMotion(e.getXOnScreen(), e.getYOnScreen(), currentTime);
+                repaint();
             }
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {}
     };
+
+    @Override
+    public void setSize(int width, int height)
+    {
+        super.setSize(width, height);
+        glassPane.setSize(width, height);
+    }
 
     public long getLastTime()
     {
@@ -96,12 +109,14 @@ public class ScrollPane extends MoveableComponent
     {
         @Override
         public void mouseClicked(MouseEvent e) {
+            repaint();
             System.out.println("click");
         }
 
         @Override
         public void mousePressed(MouseEvent e)
         {
+            repaint();
             isDragging = true;
             setMotion(e.getXOnScreen(), e.getYOnScreen(), System.currentTimeMillis());
             hold();
@@ -113,6 +128,7 @@ public class ScrollPane extends MoveableComponent
         {
             isDragging = false;
             slipMotion();
+            repaint();
         }
 
         @Override
@@ -159,6 +175,7 @@ public class ScrollPane extends MoveableComponent
         // Update container location
         container.setLocation(newX, newY);
         container.repaint();
+        repaint();
     };
 
     public synchronized void slipMotion()
@@ -188,7 +205,9 @@ public class ScrollPane extends MoveableComponent
             // Stop the timer if velocity drops below a threshold
             if (Math.abs(velocityX) < 0.5 && Math.abs(velocityY) < 0.5) {
                 timer.stop();
+                repaint();
             }
+            repaint();
         });
         timer.start();
     }
@@ -220,6 +239,7 @@ public class ScrollPane extends MoveableComponent
         container.add(component);
         container.revalidate();
         container.repaint();
+        repaint();
     }
 
     public void removeComponentFromContainer(Component component)
@@ -254,5 +274,21 @@ public class ScrollPane extends MoveableComponent
     public void setContainerBorder(Border border)
     {
         container.setBorder(border);
+    }
+
+    @Override
+    public void repaint()
+    {
+        super.repaint();
+        if(container != null)
+        {
+            container.repaint();
+            System.out.println("container repaint");
+        }
+        if(glassPane != null)
+        {
+            glassPane.repaint();
+            System.out.println("glassPane repaint");
+        }
     }
 }

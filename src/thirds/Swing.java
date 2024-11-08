@@ -65,7 +65,7 @@ public class Swing extends JFrame
     {
         JPanel panel = new JPanel(); // new object
         panel.setLayout(null); // include jud ni siya guys.
-        panel.setBackground(new Color(0, 0, 0)); // optional. red, green, blue, alpha na siya.
+        panel.setBackground(new Color(102, 237, 24)); // optional. red, green, blue, alpha na siya.
         panel.setSize(1280, 720); // size
         panel.setVisible(true);
         return panel; // mao ang panel na ireturn.
