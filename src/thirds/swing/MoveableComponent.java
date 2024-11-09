@@ -2,6 +2,7 @@ package thirds.swing;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -120,10 +121,16 @@ public class MoveableComponent extends JPanel
                 setSize(newWidth, newHeight);
                 setLocation(newX, newY);
 
+                if(getParent() != null)
+                    getParent().repaint();
+                repaint();
                 //System.out.println(newX + " " + newY + " " + newWidth + " " + newHeight);
             }
             else {
                 ((Timer) e.getSource()).stop(); // Stop the timer when scaling is complete
+                if(getParent() != null)
+                    getParent().repaint();
+                repaint();
             }
         });
 

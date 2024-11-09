@@ -1,10 +1,10 @@
 package thirds.swing;
 
-import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,7 +14,7 @@ import java.awt.event.MouseWheelListener;
 public class ScrollPane extends MoveableComponent
 {
     private MoveableComponent container;
-    public JPanel glassPane;
+    public MoveableComponent glassPane;
     private Timer timer;
     private int currentX;
     private int currentY;
@@ -30,8 +30,8 @@ public class ScrollPane extends MoveableComponent
         super();
         container = new MoveableComponent();
         container.setBackground(Color.WHITE);
-        glassPane = new JPanel(null);
-        glassPane.setBackground(new Color(0, 0, 0, 0));
+        glassPane = new MoveableComponent();
+        glassPane.setOpaque(false);
         add(glassPane);
         add(container);
         addMouseWheelListener(mwl);
@@ -229,7 +229,7 @@ public class ScrollPane extends MoveableComponent
         container.setSize(width, height);
     }
 
-    public JPanel getContainer()
+    public MoveableComponent getContainer()
     {
         return container;
     }
@@ -281,14 +281,17 @@ public class ScrollPane extends MoveableComponent
     {
         super.repaint();
         if(container != null)
-        {
             container.repaint();
-            System.out.println("container repaint");
-        }
         if(glassPane != null)
-        {
             glassPane.repaint();
-            System.out.println("glassPane repaint");
-        }
+    }
+
+    public void setGlassPane(MoveableComponent comp)
+    {
+        removeAll();
+        glassPane = comp;
+        comp.setOpaque(false);
+        add(glassPane);
+        add(container);
     }
 }
