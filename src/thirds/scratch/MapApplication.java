@@ -2,6 +2,7 @@ package thirds.scratch;
 
 import thirds.io.Resources;
 import thirds.place.Place;
+import thirds.swing.Label;
 import thirds.swing.MoveableComponent;
 import thirds.swing.ScrollPane;
 
@@ -62,70 +63,64 @@ public class MapApplication extends JFrame
         catch(IOException e) {
             throw new RuntimeException(e);
         }
-
+        
         ScrollPane sc = scrollPlaceInfo(fadeDown);
-
 
         MoveableComponent panel = getPlaceInfoPanel(fadeDown, image, fadeUp);
 
         JLabel label = createSampleLabel();
-        sc.glassPane.add(label);
-
         JLabel loremLabel = createLoremLabel();
 
         panel.add(label);
-        sc.addComponentToContainer(loremLabel);
         sc.addComponentToContainer(panel);
+        sc.addComponentToContainer(loremLabel);
+
+        MoveableComponent mv = getFadeEffect(fadeDown);
+        sc.glassPane.add(mv);
 
         return sc;
     }
 
-    private JLabel createLoremLabel()
+    private MoveableComponent getFadeEffect(BufferedImage fadeDown)
     {
-        JLabel l = new JLabel();
-        l.setOpaque(false);
-        l.setText("<html>" +
-                      "<div text-align: justify;'>"
-                        + "Lorem ipsum dolor sit amet," +
-                " consectetur adipiscing elit. Sed do eiusmod tempor" +
-                " incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
-                "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip" +
-                " ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate " +
-                "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat " +
-                "non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-                    + "</div>" +
-                 "</html>" );
-        l.setLocation(20, 400);
-        l.setForeground(Color.WHITE);
-        l.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 20));
-        l.setSize(360, 400);
-        return l;
-    }
-
-    private ScrollPane scrollPlaceInfo(BufferedImage fadeDown)
-    {
-        ScrollPane sc = new ScrollPane();
-        sc.setSize(400, 720);
-        sc.setContainerSize(400, 2000);
-        sc.setLocation(880, 0);
-        sc.setContainerBackground(new Color(177, 106, 0));
-
-        MoveableComponent panel = new MoveableComponent()
+        MoveableComponent mv = new MoveableComponent()
         {
             @Override
             public void paintComponent(Graphics g)
             {
                 Graphics2D g2d = fadeDown.createGraphics();
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_IN, 1f));
-                g2d.setColor(new Color(43, 26, 0));
+                g2d.setColor(new Color(177, 106, 0));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
-                g.drawImage(fadeDown, 0, 0, null);
+                g2d.dispose();
+                g.drawImage(fadeDown, 0, 0, 350, 350, null);
             }
         };
-        panel.setSize(400, 400);
-        panel.setLocation(0, 320);
+        mv.setSize(350, 350);
+        mv.setLocation(0, 720 - mv.getHeight());
+        return mv;
+    }
 
-        sc.glassPane.add(panel);
+    private JLabel createLoremLabel()
+    {
+        Label l = new Label();
+        l.setOpaque(false);
+        l.setSize(310, 20);
+        l.setFont(new Font("Franklin Gothic", Font.PLAIN, 18));
+        l.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel quam ac sapien pharetra lobortis non in ligula. Aenean id orci ut eros ultricies lobortis. Donec sed sodales velit. Duis ac lobortis purus. Quisque nec rutrum sapien, a lobortis enim. Integer in urna ac neque suscipit dignissim eu at elit. Cras dignissim lacus accumsan lectus consequat vulputate. Proin nec ultrices nisi, non sodales elit.\n" +
+                "Praesent efficitur iaculis scelerisque. Cras ut laoreet nisi. Cras libero sapien, facilisis id sapien a, eleifend pellentesque dui. Etiam non iaculis tellus, eu rutrum est. Quisque et dignissim tortor. Donec aliquet sollicitudin orci ut aliquam. Quisque ut purus molestie, aliquet metus nec, placerat nulla. Quisque sit amet lorem sapien. Etiam euismod dapibus eros, eget ultricies arcu pulvinar ut. Sed ac lorem urna. Nulla ullamcorper tristique erat. Nam faucibus aliquet vulputate");
+        l.setLocation(20, 350);
+        l.setForeground(Color.WHITE);
+        return l;
+    }
+
+    private ScrollPane scrollPlaceInfo(BufferedImage fadeDown)
+    {
+        ScrollPane sc = new ScrollPane();
+        sc.setSize(350, 720);
+        sc.setContainerSize(350, 2000);
+        sc.setLocation(1280, 0);
+        sc.setContainerBackground(new Color(177, 106, 0));
 
         return sc;
     }
@@ -141,14 +136,15 @@ public class MapApplication extends JFrame
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_IN, 1f));
                 g2d.setColor(new Color(177, 106, 0));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
 
-                g.drawImage(image, 0, 0, 400, 400, null);
-                g.drawImage(fadeDown, 0, 0, 400, 400, null);
-                g.drawImage(fadeUp, 0, 0, 400, 400, null);
+                g.drawImage(image, 0, 0, 350, 350, null);
+                g.drawImage(fadeDown, 0, 0, 350, 350, null);
+                g.drawImage(fadeUp, 0, 0, 350, 350, null);
             }
         };
 
-        panel.setSize(400, 400);
+        panel.setSize(350, 350);
         panel.setLocation(0, 0);
         return panel;
     }
@@ -160,7 +156,7 @@ public class MapApplication extends JFrame
                 "Sample\n<br> " +
                 "Coffee Shop </br>" +
                 "</html>");
-        label.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 60));
+        label.setFont(new Font("Microsoft New Tai Lue", Font.BOLD, 50));
         label.setForeground(Color.white);
 
         FontMetrics fm = label.getFontMetrics(label.getFont());
@@ -171,7 +167,7 @@ public class MapApplication extends JFrame
             if(s == '\n')
                 height += fm.getHeight() + 1;
 
-        label.setBounds(20, 400 - height - 20,
+        label.setBounds(20, 350 - height - 20,
                 width, height);
         return label;
     }
@@ -221,7 +217,7 @@ public class MapApplication extends JFrame
                 }
                 else
                 {
-                    placeInformation.move(880, 0, 200);
+                    placeInformation.move(930, 0, 200);
                     bool.set(true);
                 }
             }
@@ -276,6 +272,7 @@ public class MapApplication extends JFrame
 
     public static void main(String... args)
     {
+        System.out.println("Hello World!");
         SwingUtilities.invokeLater(MapApplication::new);
     }
 }
