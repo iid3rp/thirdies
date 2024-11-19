@@ -4,7 +4,6 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -291,7 +290,7 @@ public class ScrollPane extends MoveableComponent
         removeAll();
         glassPane = comp;
         comp.setOpaque(false);
-        add(glassPane);
         add(container);
+        add(glassPane);
     }
 }

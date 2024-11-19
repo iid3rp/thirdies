@@ -2,6 +2,7 @@ package thirds.swing;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -19,6 +20,7 @@ public class MoveableComponent extends JPanel
     public MoveableComponent()
     {
         super(null);
+        setBackground(new Color(0, 0, 0, 0));
     }
 
     public synchronized void setMotion(int x, int y, long currentTime)
