@@ -193,7 +193,7 @@ public class SignUpScreen extends JPanel
             height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
 
       label.setSize(width, height); // width and height.
-      label.setLocation(40, 40); // x and y.
+      label.setLocation(50, 50); // x and y.
       return label;
    }
 
