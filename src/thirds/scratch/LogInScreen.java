@@ -3,15 +3,10 @@ package thirds.scratch;
 import thirds.io.Resources;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -28,12 +23,11 @@ public class LogInScreen extends JPanel
 
         JLabel logInText = createLogInText();
         JLabel SignUpText = createSignUpText();
-        JLabel UserText = createUserText();
-        JLabel PassText = createPassText();
-        add(PassText);
-        add(UserText);
         add(logInText);
         add(SignUpText);
+        add(createUserTextFieldWithPlaceholder(50, 154));
+        add(createPassTextFieldWithPlaceholder(50, 204));
+        addCloseIconListener();
 
     }
 
@@ -103,61 +97,84 @@ public class LogInScreen extends JPanel
         return label;
     }
 
+//   label.setLocation(56, 159); // x and y.
 
+    private JPanel createUserTextFieldWithPlaceholder(int x, int y) {
+        JPanel panel = new JPanel(null);
+        panel.setBounds(x, y, 271, 29);
+        panel.setOpaque(false);
 
-    private JLabel createUserText()
-    {
-        JLabel label = new JLabel();
-        label.setText("<html>" +
-                "Username\n<br>");
+        JTextField textField = new JTextField("Password");
+        textField.setBounds(0, 0, 271, 29);
+        textField.setOpaque(false);
+        textField.setBackground(new Color(0, 0, 0, 0));
+        textField.setForeground(Color.WHITE);
+        textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        textField.setBorder(BorderFactory.createEmptyBorder());
+        textField.setHorizontalAlignment(SwingConstants.LEFT);
 
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18)); // ing ani ang pag change sa font guys
+        textField.addFocusListener(new java.awt.event.FocusListener() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (textField.getText().equals("Password")) {
+                    textField.setText("");
+                    textField.setForeground(Color.WHITE);
+                }
+            }
 
-        FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-        int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-        int height = fm.getHeight();
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (textField.getText().trim().isEmpty()) {
+                    textField.setText("Password");
+                    textField.setForeground(Color.WHITE);
+                }
+            }
+        });
 
-        for(char s : label.getText().toCharArray())
-            if(s == '\n')
-                height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-        label.setSize(width, height); // width and height.
-        label.setLocation(56, 159); // x and y.
-        return label;
+        panel.add(textField);
+        return panel;
     }
 
-    private JLabel createPassText()
-    {
-        JLabel label = new JLabel();
-        label.setText("<html>" +
-                "Password\n<br>");
+    private JPanel createPassTextFieldWithPlaceholder(int x, int y) {
+        JPanel panel = new JPanel(null);
+        panel.setBounds(x, y, 271, 29);
+        panel.setOpaque(false);
 
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18)); // ing ani ang pag change sa font guys
+        JTextField textField = new JTextField("Username");
+        textField.setBounds(0, 0, 271, 29);
+        textField.setOpaque(false);
+        textField.setBackground(new Color(0, 0, 0, 0));
+        textField.setForeground(Color.WHITE);
+        textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        textField.setBorder(BorderFactory.createEmptyBorder());
+        textField.setHorizontalAlignment(SwingConstants.LEFT);
 
-        FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-        int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-        int height = fm.getHeight();
+        textField.addFocusListener(new java.awt.event.FocusListener() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (textField.getText().equals("Username")) {
+                    textField.setText("");
+                    textField.setForeground(Color.WHITE);
+                }
+            }
 
-        for(char s : label.getText().toCharArray())
-            if(s == '\n')
-                height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (textField.getText().trim().isEmpty()) {
+                    textField.setText("Username");
+                    textField.setForeground(Color.WHITE);
+                }
+            }
+        });
 
-        label.setSize(width, height); // width and height.
-        label.setLocation(56, 210); // x and y.
-        return label;
+        panel.add(textField);
+        return panel;
     }
 
     private void drawCloseIcon(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Set the color to orange
-        g2d.setColor(new Color(255, 165, 0));
-        g2d.setStroke(new java.awt.BasicStroke(3));
-
-        // Set the color to white for the "X"
         g2d.setColor(Color.ORANGE);
         int padding = 6;
         int x1 = 450 + padding;
@@ -165,9 +182,26 @@ public class LogInScreen extends JPanel
         int x2 = 450 + 30 - padding;
         int y2 = 20 + 30 - padding;
 
-        // Draw the "X" lines
         g2d.drawLine(x1, y1, x2, y2); // Top-left to bottom-right
         g2d.drawLine(x1, y2, x2, y1); // Bottom-left to top-right
+    }
+
+    private void addCloseIconListener() {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int padding = 6;
+                int iconX = 450 + padding;
+                int iconY = 20 + padding;
+                int iconSize = 30 - 2 * padding;
+
+                Rectangle closeIconBounds = new Rectangle(iconX, iconY, iconSize, iconSize);
+
+                if (closeIconBounds.contains(e.getPoint())) {
+                    System.exit(0); // Exit the program
+                }
+            }
+        });
     }
 
 
@@ -193,10 +227,10 @@ public class LogInScreen extends JPanel
         g2d.setColor(new Color(255, 165, 0));
 
         // Draw the first line
-        g2d.fillRect(50, 197, 272, 2); // x, y, width, height
+        g2d.fillRect(50, 183, 272, 2); // x, y, width, height
 
         // Draw the second line
-        g2d.fillRect(50, 248, 272, 2); // x, y, width, height
+        g2d.fillRect(50, 232, 272, 2); // x, y, width, height
     }
 
 
