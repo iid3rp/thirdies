@@ -3,166 +3,114 @@ package thirds.scratch;
 import thirds.io.Resources;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class SignUpScreen extends JPanel
-{
+public class SignUpScreen extends JPanel {
    private BufferedImage background;
-   public SignUpScreen()
-   {
-      super();
+
+   public SignUpScreen() {
       initializeComponent();
 
-      JLabel welcomeText = createWelcomeText();
-      add(welcomeText);
+      // Add components to the panel
+      add(createWelcomeText());
+      add(createInstrucText());
+      add(createInstrucText1());
+      add(createInstrucText2());
+      add(createEmailTextFieldWithPlaceholder(51, 197));
 
-      JLabel logInText = createLogInText();
-      add(logInText);
-
-      JLabel InstructionText = createInstrucText();
-      add(InstructionText);
-
-      JLabel InstructionText1 = createInstrucText1();
-      add(InstructionText1);
-
-      JLabel InstructionText2 = createInstrucText2();
-      add(InstructionText2);
-
-      JLabel EmailText = createEmailText();
-      add(EmailText);
+      // Add mouse listener for close icon
+      addCloseIconListener();
    }
 
-   private JLabel createEmailText()
-   {
-      JLabel label = new JLabel();
-      label.setText("Email Address");
+   private JPanel createEmailTextFieldWithPlaceholder(int x, int y) {
+      JPanel panel = new JPanel(null);
+      panel.setBounds(x, y, 271, 29);
+      panel.setOpaque(false);
 
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16)); // ing ani ang pag change sa font guys
+      JTextField textField = new JTextField("Email Address");
+      textField.setBounds(0, 0, 271, 29);
+      textField.setOpaque(false);
+      textField.setBackground(new Color(0, 0, 0, 0));
+      textField.setForeground(Color.LIGHT_GRAY);
+      textField.setBorder(BorderFactory.createEmptyBorder());
+      textField.setHorizontalAlignment(SwingConstants.LEFT);
+
+      textField.addFocusListener(new java.awt.event.FocusListener() {
+         @Override
+         public void focusGained(java.awt.event.FocusEvent e) {
+            if (textField.getText().equals("Email Address")) {
+               textField.setText("");
+               textField.setForeground(Color.WHITE);
+            }
+         }
+
+         @Override
+         public void focusLost(java.awt.event.FocusEvent e) {
+            if (textField.getText().trim().isEmpty()) {
+               textField.setText("Email Address");
+               textField.setForeground(Color.LIGHT_GRAY);
+            }
+         }
+      });
+
+      panel.add(textField);
+      return panel;
+   }
+
+   private JLabel createInstrucText() {
+      return createTextLabel("Start with your email. We", 50, 116);
+   }
+
+   private JLabel createInstrucText1() {
+      return createTextLabel("will send a code for you to", 50, 137);
+   }
+
+   private JLabel createInstrucText2() {
+      return createTextLabel("get started.", 50, 161);
+   }
+
+   private JLabel createWelcomeText() {
+      JLabel label = new JLabel("Sign Up");
+      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 35));
       label.setForeground(Color.WHITE);
-
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-      int height = fm.getHeight();
-
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
-            height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-      label.setSize(width, height); // width and height.
-      label.setLocation(65, 200); // x and y.
+      label.setBounds(50, 50, 400, 40);
       return label;
    }
 
-   private JLabel createLogInText()
-   {
-      JLabel label = new JLabel();
-      label.setText("Log in");
-
-      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 18)); // ing ani ang pag change sa font guys
-      label.setForeground(Color.ORANGE);
-
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-      int height = fm.getHeight();
-
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
-            height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-      label.setSize(width, height); // width and height.
-      label.setLocation(65, 268); // x and y.
-      return label;
-   }
-
-   private JLabel createInstrucText()
-   {
-      JLabel label = new JLabel();
-
-      label.setText("Start with your email. We");
-
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 15)); // ing ani ang pag change sa font guys
+   private JLabel createTextLabel(String text, int x, int y) {
+      JLabel label = new JLabel(text);
+      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 15));
       label.setForeground(Color.WHITE);
-
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-      int height = fm.getHeight();
-
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
-            height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-      label.setSize(width, height); // width and height.
-      label.setLocation(50, 116); // x and y.
+      label.setBounds(x, y, 300, 20);
       return label;
-
    }
 
-   private JLabel createInstrucText1()
-   {
-      JLabel label = new JLabel();
-
-      label.setText("will send a code for you to");
-
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 15)); // ing ani ang pag change sa font guys
-      label.setForeground(Color.WHITE);
-
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-      int height = fm.getHeight();
-
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
-            height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-      label.setSize(width, height); // width and height.
-      label.setLocation(50, 137); // x and y.
-      return label;
-
+   private void initializeComponent() {
+      try {
+         background = ImageIO.read(Resources.getResourceAsStream("demoBlurred.png"));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+      setLayout(null);
+      setPreferredSize(new Dimension(500, 350));
    }
 
-   private JLabel createInstrucText2()
-   {
-      JLabel label = new JLabel();
-
-      label.setText("get started.");
-
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 15)); // ing ani ang pag change sa font guys
-      label.setForeground(Color.WHITE);
-
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-      int height = fm.getHeight();
-
-
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
-            height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-      label.setSize(width, height); // width and height.
-      label.setLocation(50, 161); // x and y.
-      return label;
-
+   private void drawOrangeLine(Graphics g) {
+      Graphics2D g2d = (Graphics2D) g;
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.setColor(new Color(255, 165, 0)); // Orange color
+      g2d.fillRect(50, 224, 272, 2); // Line coordinates and size
    }
 
    private void drawCloseIcon(Graphics g) {
       Graphics2D g2d = (Graphics2D) g;
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-      // Set the color to orange
-      g2d.setColor(new Color(255, 165, 0));
-      g2d.setStroke(new java.awt.BasicStroke(3));
-
-      // Set the color to white for the "X"
       g2d.setColor(Color.ORANGE);
       int padding = 6;
       int x1 = 450 + padding;
@@ -170,83 +118,48 @@ public class SignUpScreen extends JPanel
       int x2 = 450 + 30 - padding;
       int y2 = 20 + 30 - padding;
 
-      // Draw the "X" lines
       g2d.drawLine(x1, y1, x2, y2); // Top-left to bottom-right
       g2d.drawLine(x1, y2, x2, y1); // Bottom-left to top-right
    }
 
-   private JLabel createWelcomeText()
-   {
-      JLabel label = new JLabel();
-      label.setText("<html>" +
-              "Sign Up\n<br>");
+   private void addCloseIconListener() {
+      addMouseListener(new MouseAdapter() {
+         @Override
+         public void mouseClicked(MouseEvent e) {
+            int padding = 6;
+            int iconX = 450 + padding;
+            int iconY = 20 + padding;
+            int iconSize = 30 - 2 * padding;
 
-      label.setForeground(Color.WHITE);
-      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 35)); // ing ani ang pag change sa font guys
+            Rectangle closeIconBounds = new Rectangle(iconX, iconY, iconSize, iconSize);
 
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
-      int height = fm.getHeight();
-
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
-            height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
-
-      label.setSize(width, height); // width and height.
-      label.setLocation(50, 50); // x and y.
-      return label;
-   }
-
-   private void initializeComponent()
-   {
-      try {
-         background = ImageIO.read(Resources.getResourceAsStream("demoBlurred.png"));
-      }
-      catch(IOException e) {
-         throw new RuntimeException(e);
-      }
-      setLayout(null);
-      setSize(500, 350);
-      setBackground(new Color(184, 141, 29));
-      setVisible(true);
-   }
-
-   private void drawOrangeLines(Graphics g) {
-      Graphics2D g2d = (Graphics2D) g;
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-      // Set the color to orange
-      g2d.setColor(new Color(255, 165, 0));
-
-      // Draw the first line
-      g2d.fillRect(50, 224, 272, 2); // x, y, width, height
-
-   }
-
-   public static void main(String[] args)
-   {
-      JFrame frame = new JFrame();
-      frame.setSize(500, 350);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.setLocationRelativeTo(null);
-      frame.setUndecorated(true);
-
-      frame.add(new SignUpScreen());
-      frame.setVisible(true);
+            if (closeIconBounds.contains(e.getPoint())) {
+               System.exit(0); // Exit the program
+            }
+         }
+      });
    }
 
    @Override
-   public void paintComponent(Graphics g)
-   {
-      //
-      Graphics2D graphics = background.createGraphics();
-      graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      graphics.drawImage(background, 0, 0, null);
+   protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      if (background != null) {
+         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+      }
+      drawOrangeLine(g); // Draw custom orange line
+      drawCloseIcon(g); // Draw the close icon
+   }
 
-      g.drawImage(background, 0, 0, getWidth(),getHeight(),null);
-      drawOrangeLines(g);
-      drawCloseIcon(g);
+   public static void main(String[] args) {
+      JFrame frame = new JFrame("Sign Up Screen");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setSize(500, 350);
+      frame.setLocationRelativeTo(null);
+      frame.setUndecorated(true);
 
+      SignUpScreen signUpScreen = new SignUpScreen();
+      frame.add(signUpScreen);
+      frame.pack();
+      frame.setVisible(true);
    }
 }
-
