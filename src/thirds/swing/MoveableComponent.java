@@ -34,7 +34,7 @@ public class MoveableComponent extends JPanel
     {
         final double deceleration = 0.95;
 
-        timer = new Timer(10, e -> {
+        timer = new Timer(5, e -> {
 
             int newX = getX() + (int) velocityX;
             int newY = getY() + (int) velocityY;
@@ -62,7 +62,7 @@ public class MoveableComponent extends JPanel
             velocityX *= deceleration;
             velocityY *= deceleration;
 
-            // Stop when velocity is very low
+            // Stop when the velocity is very low
             if (Math.abs(velocityX) < 0.5 && Math.abs(velocityY) < 0.5) {
                 timer.stop();
             }
@@ -104,7 +104,7 @@ public class MoveableComponent extends JPanel
             timer.stop();
         }
 
-        timer = new Timer(10, e ->
+        timer = new Timer(5, e ->
         {
             if(currentStep.get() < totalSteps) {
                 currentStep.getAndIncrement();

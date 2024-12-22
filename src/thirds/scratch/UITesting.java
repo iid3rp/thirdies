@@ -103,7 +103,7 @@ public class UITesting
 
         });
 
-        //panel.add(blackBox);
+        panel.add(blackBox);
 
         JLabel brat = getjLabel();
 
@@ -148,7 +148,7 @@ public class UITesting
             pane.addComponentToContainer(label);
         }
 
-        panel.add(pane);
+        //panel.add(pane);
         // last
         frame.setVisible(true);
     }

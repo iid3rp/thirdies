@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 
-public abstract class Place implements Comparable<Place>, Serializable
 
+public class Place implements Comparable<Place>, Serializable
 {
     @Serial
     private static final long serialVersionUID = -1883881532462869784L;
@@ -217,5 +217,14 @@ public abstract class Place implements Comparable<Place>, Serializable
     public void addTag(String tag)
     {
         tags.add(tag);
+    }
+
+    @Override
+    public int compareTo(Place place)
+    {
+        double thisDistance = this.getLengthFromLocation();
+        double otherDistance = place.getLengthFromLocation();
+
+        return Double.compare(thisDistance, otherDistance);
     }
 }
