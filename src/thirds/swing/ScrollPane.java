@@ -148,6 +148,7 @@ public class ScrollPane extends MoveableComponent
     {
         if(timer != null && timer.isRunning()) {
             timer.stop();
+
         }
     }
 
