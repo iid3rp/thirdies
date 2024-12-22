@@ -10,6 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class Place implements Comparable<Place>, Serializable
+
 {
     @Serial
     private static final long serialVersionUID = -1883881532462869784L;
