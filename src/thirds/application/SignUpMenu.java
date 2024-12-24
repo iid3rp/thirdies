@@ -1,6 +1,5 @@
 package thirds.application;
 
-import thirds.io.Debug;
 import thirds.io.Resources;
 import thirds.scratch.LogInScreen;
 import thirds.scratch.SignUpScreen;
@@ -9,23 +8,28 @@ import thirds.swing.MoveableComponent;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class SignUpMenu
 {
-    private static JFrame frame;
+    public static JFrame frame;
     private static BufferedImage background;
     private static BufferedImage fade;
+    public static boolean isDragging;
+    public static Point offset;
 
     public static void main(String... args)
     {
@@ -54,20 +58,42 @@ public class SignUpMenu
                 if (closeIconBounds.contains(e.getPoint())) {
                     close();
                 }
-
-
-                panel.transferFocus();
+                panel.requestFocusInWindow();
             }
             @Override
             public void mousePressed(MouseEvent e)
             {
-                super.mousePressed(e);
+                if (SwingUtilities.isLeftMouseButton(e))
+                {
+                    isDragging = true;
+                    offset = e.getPoint();
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent e)
             {
-                super.mouseReleased(e);
+                if (SwingUtilities.isLeftMouseButton(e))
+                {
+                    isDragging = false;
+                }
+            }
+        });
+
+        panel.addMouseMotionListener(new MouseMotionAdapter()
+        {
+            @Override
+            public void mouseDragged(MouseEvent e)
+            {
+                if (isDragging)
+                {
+                    Point currentMouse = e.getLocationOnScreen();
+
+                    int deltaX = currentMouse.x - offset.x;
+                    int deltaY = currentMouse.y - offset.y;
+
+                    frame.setLocation(deltaX, deltaY);
+                }
             }
         });
 
@@ -107,6 +133,7 @@ public class SignUpMenu
                 drawCloseIcon(g);
             }
         };
+        panel.setFocusable(true);
         panel.setSize(500, 300);
         return panel;
     }
