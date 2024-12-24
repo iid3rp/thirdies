@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 
+
 public class Place implements Comparable<Place>, Serializable
 {
     @Serial
