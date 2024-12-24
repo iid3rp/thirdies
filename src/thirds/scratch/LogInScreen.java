@@ -1,44 +1,42 @@
 package thirds.scratch;
 
-import thirds.io.Resources;
+import thirds.application.SignUpMenu;
+import thirds.swing.MoveableComponent;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 
 ////Testing for branch commit java documentation
-public class LogInScreen extends JPanel
+public class LogInScreen
 {
-    private BufferedImage background;
-    public LogInScreen()
+    public static MoveableComponent panel;
+    
+    static
     {
-        super();
         initializeComponent();
 
         JLabel welcomeText = createWelcomeText();
-        add(welcomeText);
+        panel.add(welcomeText);
 
         JLabel logInText = createLogInText();
         JLabel SignUpText = createSignUpText();
-        add(logInText);
-        add(SignUpText);
-        add(createUserTextFieldWithPlaceholder(50, 154));
-        add(createPassTextFieldWithPlaceholder(50, 204));
-        addCloseIconListener();
+        panel.add(logInText);
+        panel.add(SignUpText);
+        panel.add(createUserTextFieldWithPlaceholder(50, 154));
+        panel.add(createPassTextFieldWithPlaceholder(50, 204));
 
     }
 
-    private JLabel createLogInText()
+    private static JLabel createLogInText()
     {
         JLabel label = new JLabel();
         label.setText("Log in");
 
-        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18)); // ing ani ang pag change sa font guys
+        label.setFont(new Font("Ebrima", Font.PLAIN, 18)); // ing ani ang pag change sa font guys
         label.setForeground(Color.WHITE);
 
         FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
@@ -54,12 +52,12 @@ public class LogInScreen extends JPanel
         return label;
     }
 
-    private JLabel createSignUpText()
+    private static JLabel createSignUpText()
     {
         JLabel label = new JLabel();
         label.setText("Sign Up");
 
-        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18)); // ing ani ang pag change sa font guys
+        label.setFont(new Font("Ebrima", Font.PLAIN, 18)); // ing ani ang pag change sa font guys
         label.setForeground(Color.ORANGE);
 
         FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
@@ -72,10 +70,20 @@ public class LogInScreen extends JPanel
 
         label.setSize(width, height); // width and height.
         label.setLocation(151, 270); // x and y.
+
+        label.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                panel.move(-500, 0, 250);
+                SignUpScreen.panel.move(0, 0, 250);
+            }
+        });
         return label;
     }
 
-    private JLabel createWelcomeText()
+    private static JLabel createWelcomeText()
     {
         JLabel label = new JLabel();
         label.setText("<html>" +
@@ -84,7 +92,7 @@ public class LogInScreen extends JPanel
                      "</html>");
 
         label.setForeground(Color.WHITE);
-        label.setFont(new Font("Kantumruy Pro", Font.BOLD, 35)); // ing ani ang pag change sa font guys
+        label.setFont(new Font("Ebrima", Font.BOLD, 35)); // ing ani ang pag change sa font guys
 
         FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
         int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
@@ -101,7 +109,7 @@ public class LogInScreen extends JPanel
 
 //   label.setLocation(56, 159); // x and y.
 
-    private JPanel createUserTextFieldWithPlaceholder(int x, int y) {
+    private static JPanel createUserTextFieldWithPlaceholder(int x, int y) {
         JPanel panel = new JPanel(null);
         panel.setBounds(x, y, 271, 29);
         panel.setOpaque(false);
@@ -111,7 +119,7 @@ public class LogInScreen extends JPanel
         textField.setOpaque(false);
         textField.setBackground(new Color(0, 0, 0, 0));
         textField.setForeground(Color.WHITE);
-        textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        textField.setFont(new Font("Ebrima", Font.PLAIN, 18));
         textField.setBorder(BorderFactory.createEmptyBorder());
         textField.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -137,7 +145,7 @@ public class LogInScreen extends JPanel
         return panel;
     }
 
-    private JPanel createPassTextFieldWithPlaceholder(int x, int y) {
+    private static JPanel createPassTextFieldWithPlaceholder(int x, int y) {
         JPanel panel = new JPanel(null);
         panel.setBounds(x, y, 271, 29);
         panel.setOpaque(false);
@@ -147,7 +155,7 @@ public class LogInScreen extends JPanel
         textField.setOpaque(false);
         textField.setBackground(new Color(0, 0, 0, 0));
         textField.setForeground(Color.WHITE);
-        textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        textField.setFont(new Font("Ebrima", Font.PLAIN, 18));
         textField.setBorder(BorderFactory.createEmptyBorder());
         textField.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -173,10 +181,10 @@ public class LogInScreen extends JPanel
         return panel;
     }
 
-    private void drawCloseIcon(Graphics g) {
+    private static void drawCloseIcon(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        g2d.setStroke(new BasicStroke(3)); // added stroke guys
         g2d.setColor(Color.ORANGE);
         int padding = 6;
         int x1 = 450 + padding;
@@ -188,8 +196,8 @@ public class LogInScreen extends JPanel
         g2d.drawLine(x1, y2, x2, y1); // Bottom-left to top-right
     }
 
-    private void addCloseIconListener() {
-        addMouseListener(new MouseAdapter() {
+    private static void addCloseIconListener() {
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int padding = 6;
@@ -199,40 +207,36 @@ public class LogInScreen extends JPanel
 
                 Rectangle closeIconBounds = new Rectangle(iconX, iconY, iconSize, iconSize);
 
+                // if this points to the exit
                 if (closeIconBounds.contains(e.getPoint())) {
-                    System.exit(0); // Exit the program
+                    SignUpMenu.close();
                 }
             }
         });
     }
 
 
-    private void initializeComponent()
+    private static void initializeComponent()
     {
-        try {
-            background = ImageIO.read(Resources.getResourceAsStream("demoBlurred.png"));
-        }
-        catch(IOException e) {
-            throw new RuntimeException(e);
-        }
-        setLayout(null);
-        setSize(500, 350);
-        setBackground(new Color(184, 141, 29));
-        setVisible(true);
+        panel = new MoveableComponent()
+        {
+            @Override
+            public void paintComponent(Graphics g)
+            {
+                drawOrangeLines(g);
+            }
+        };
+        panel.setOpaque(false);
+        panel.setSize(500, 350);
+        panel.setVisible(true);
     }
 
-    private void drawOrangeLines(Graphics g) {
+    private static void drawOrangeLines(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Set the color to orange
         g2d.setColor(new Color(255, 165, 0));
-
-        // Draw the first line
-        g2d.fillRect(50, 183, 272, 2); // x, y, width, height
-
-        // Draw the second line
-        g2d.fillRect(50, 232, 272, 2); // x, y, width, height
+        g2d.fillRect(50, 183, 272, 2);
+        g2d.fillRect(50, 232, 272, 2);
     }
 
 
@@ -244,22 +248,7 @@ public class LogInScreen extends JPanel
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
 
-        frame.add(new LogInScreen());
+        frame.add(panel);
         frame.setVisible(true);
-    }
-
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        //
-        Graphics2D graphics = background.createGraphics();
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.drawImage(background, 0, 0, null);
-
-        g.drawImage(background, 0, 0, getWidth(),getHeight(),null);
-
-        drawOrangeLines(g);
-        drawCloseIcon(g);
     }
 }
