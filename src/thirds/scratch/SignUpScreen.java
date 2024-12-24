@@ -18,8 +18,8 @@ public class SignUpScreen
       // Add components to the panel
       panel.add(createWelcomeText());
       panel.add(createInstructText());
-      panel.add(createInstrucText1());
-      panel.add(createInstrucText2());
+      panel.add(createInstructText1());
+      panel.add(createInstructText2());
       panel.add(createEmailTextFieldWithPlaceholder(51, 197));
    }
 
@@ -62,17 +62,17 @@ public class SignUpScreen
       return createTextLabel("Start with your email. We", 50, 116);
    }
 
-   private static JLabel createInstrucText1() {
+   private static JLabel createInstructText1() {
       return createTextLabel("will send a code for you to", 50, 137);
    }
 
-   private static JLabel createInstrucText2() {
+   private static JLabel createInstructText2() {
       return createTextLabel("get started.", 50, 161);
    }
 
    private static JLabel createWelcomeText() {
       JLabel label = new JLabel("Sign Up");
-      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 35));
+      label.setFont(new Font("Ebrima", Font.BOLD, 35));
       label.setForeground(Color.WHITE);
       label.setBounds(50, 50, 400, 40);
       return label;
@@ -80,7 +80,7 @@ public class SignUpScreen
 
    private static JLabel createTextLabel(String text, int x, int y) {
       JLabel label = new JLabel(text);
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 15));
+      label.setFont(new Font("Ebrima", Font.PLAIN, 15));
       label.setForeground(Color.WHITE);
       label.setBounds(x, y, 300, 20);
 
