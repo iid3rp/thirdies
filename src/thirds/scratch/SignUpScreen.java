@@ -1,33 +1,29 @@
 package thirds.scratch;
 
-import thirds.io.Resources;
+import thirds.swing.MoveableComponent;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-public class SignUpScreen extends JPanel {
-   private BufferedImage background;
+public class SignUpScreen
+{
+   public static MoveableComponent panel;
 
-   public SignUpScreen() {
+   static
+   {
       initializeComponent();
 
       // Add components to the panel
-      add(createWelcomeText());
-      add(createInstrucText());
-      add(createInstrucText1());
-      add(createInstrucText2());
-      add(createEmailTextFieldWithPlaceholder(51, 197));
-
-      // Add mouse listener for close icon
-      addCloseIconListener();
+      panel.add(createWelcomeText());
+      panel.add(createInstructText());
+      panel.add(createInstrucText1());
+      panel.add(createInstrucText2());
+      panel.add(createEmailTextFieldWithPlaceholder(51, 197));
    }
 
-   private JPanel createEmailTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createEmailTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 271, 29);
       panel.setOpaque(false);
@@ -62,19 +58,19 @@ public class SignUpScreen extends JPanel {
       return panel;
    }
 
-   private JLabel createInstrucText() {
+   private static JLabel createInstructText() {
       return createTextLabel("Start with your email. We", 50, 116);
    }
 
-   private JLabel createInstrucText1() {
+   private static JLabel createInstrucText1() {
       return createTextLabel("will send a code for you to", 50, 137);
    }
 
-   private JLabel createInstrucText2() {
+   private static JLabel createInstrucText2() {
       return createTextLabel("get started.", 50, 161);
    }
 
-   private JLabel createWelcomeText() {
+   private static JLabel createWelcomeText() {
       JLabel label = new JLabel("Sign Up");
       label.setFont(new Font("Kantumruy Pro", Font.BOLD, 35));
       label.setForeground(Color.WHITE);
@@ -82,73 +78,44 @@ public class SignUpScreen extends JPanel {
       return label;
    }
 
-   private JLabel createTextLabel(String text, int x, int y) {
+   private static JLabel createTextLabel(String text, int x, int y) {
       JLabel label = new JLabel(text);
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 15));
       label.setForeground(Color.WHITE);
       label.setBounds(x, y, 300, 20);
+
+      label.addMouseListener(new MouseAdapter()
+      {
+         @Override
+         public void mouseClicked(MouseEvent e)
+         {
+            panel.move(-500, 0, 250);
+            SignUpScrollable.panel.move(0, 0, 250);
+         }
+      });
       return label;
    }
 
-   private void initializeComponent() {
-      try {
-         background = ImageIO.read(Resources.getResourceAsStream("demoBlurred.png"));
-      } catch (IOException e) {
-         throw new RuntimeException(e);
-      }
-      setLayout(null);
-      setPreferredSize(new Dimension(500, 350));
+   private static void initializeComponent() {
+      panel = new MoveableComponent()
+      {
+         @Override
+         protected void paintComponent(Graphics g) {
+
+            drawOrangeLine(g); // Draw custom orange line
+         }
+      };
+      panel.setOpaque(false);
+      panel.setSize(new Dimension(500, 350));
    }
 
-   private void drawOrangeLine(Graphics g) {
+   private static void drawOrangeLine(Graphics g) {
       Graphics2D g2d = (Graphics2D) g;
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2d.setColor(new Color(255, 165, 0)); // Orange color
       g2d.fillRect(50, 224, 272, 2); // Line coordinates and size
    }
 
-   private void drawCloseIcon(Graphics g) {
-      Graphics2D g2d = (Graphics2D) g;
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-      g2d.setColor(Color.ORANGE);
-      int padding = 6;
-      int x1 = 450 + padding;
-      int y1 = 20 + padding;
-      int x2 = 450 + 30 - padding;
-      int y2 = 20 + 30 - padding;
-
-      g2d.drawLine(x1, y1, x2, y2); // Top-left to bottom-right
-      g2d.drawLine(x1, y2, x2, y1); // Bottom-left to top-right
-   }
-
-   private void addCloseIconListener() {
-      addMouseListener(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {
-            int padding = 6;
-            int iconX = 450 + padding;
-            int iconY = 20 + padding;
-            int iconSize = 30 - 2 * padding;
-
-            Rectangle closeIconBounds = new Rectangle(iconX, iconY, iconSize, iconSize);
-
-            if (closeIconBounds.contains(e.getPoint())) {
-               System.exit(0); // Exit the program
-            }
-         }
-      });
-   }
-
-   @Override
-   protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      if (background != null) {
-         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-      }
-      drawOrangeLine(g); // Draw custom orange line
-      drawCloseIcon(g); // Draw the close icon
-   }
 
    public static void main(String[] args) {
       JFrame frame = new JFrame("Sign Up Screen");
@@ -157,9 +124,7 @@ public class SignUpScreen extends JPanel {
       frame.setLocationRelativeTo(null);
       frame.setUndecorated(true);
 
-      SignUpScreen signUpScreen = new SignUpScreen();
-      frame.add(signUpScreen);
-      frame.pack();
+      frame.add(panel);
       frame.setVisible(true);
    }
 }

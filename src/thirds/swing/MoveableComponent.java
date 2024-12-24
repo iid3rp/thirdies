@@ -3,7 +3,6 @@ package thirds.swing;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicInteger;

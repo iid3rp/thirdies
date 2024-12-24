@@ -141,6 +141,7 @@ public class UITesting
             JLabel label = new JLabel();
             label.setText("this is a long label with a text number with " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i);
             label.setLayout(null);
+            label.setOpaque(false);
             label.setLocation(0, i * 40);
             label.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
             label.setSize(1000, 40);
@@ -148,7 +149,7 @@ public class UITesting
             pane.addComponentToContainer(label);
         }
 
-        //panel.add(pane);
+        panel.add(pane);
         // last
         frame.setVisible(true);
     }

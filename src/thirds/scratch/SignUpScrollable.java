@@ -1,43 +1,40 @@
 package thirds.scratch;
 
-import thirds.io.Resources;
+import thirds.io.Debug;
+import thirds.swing.MoveableComponent;
+import thirds.swing.ScrollPane;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-public class SignUpScrollable extends JPanel {
-
-   public SignUpScrollable() {
+public class SignUpScrollable
+{
+   public static MoveableComponent panel;
+   static
+   {
       initializeComponent();
 
-      addCloseIconListener();
-      add(createAccountText());
-      add(createDOBText());
-      add(createYYYYText());
-      add(createMMText());
-      add(createDDText());
-      add(createAtUserText());
-      add(createHandleText());
-      add(createAtHudddleUpText());
-      add(createFirstNameTextFieldWithPlaceholder(63, 168));
-      add(createMiddleNameTextFieldWithPlaceholder(63, 219));
-      add(createLastNameTextFieldWithPlaceholder(63, 274));
-      add(createYearTextFieldWithPlaceholder(63, 372));
-      add(createMonthTextFieldWithPlaceholder(119, 372));
-      add(createDayTextFieldWithPlaceholder(156, 372));
-      add(createHandleTextFieldWithPlaceholder(63, 444));
-      add(createAtUserTextFieldWithPlaceholder(63, 505));
+      panel.add(createAccountText());
+      panel.add(createDOBText());
+      panel.add(createYYYYText());
+      panel.add(createMMText());
+      panel.add(createDDText());
+      panel.add(createAtUserText());
+      panel.add(createHandleText());
+      panel.add(createAtHudddleUpText());
+      panel.add(createFirstNameTextFieldWithPlaceholder(63, 168));
+      panel.add(createMiddleNameTextFieldWithPlaceholder(63, 219));
+      panel.add(createLastNameTextFieldWithPlaceholder(63, 274));
+      panel.add(createYearTextFieldWithPlaceholder(63, 372));
+      panel.add(createMonthTextFieldWithPlaceholder(119, 372));
+      panel.add(createDayTextFieldWithPlaceholder(156, 372));
+      panel.add(createHandleTextFieldWithPlaceholder(63, 444));
+      panel.add(createAtUserTextFieldWithPlaceholder(63, 505));
 
    }
 
-   private BufferedImage background;
-
-   private JLabel createAccountText()
+   private static JLabel createAccountText()
    {
       JLabel label = new JLabel();
       label.setText("<html>" +
@@ -61,7 +58,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createDOBText() {
+   private static JLabel createDOBText() {
       JLabel label = new JLabel("Date of Birth");
       label.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
       label.setForeground(Color.WHITE);
@@ -69,7 +66,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createYYYYText() {
+   private static JLabel createYYYYText() {
       JLabel label = new JLabel("yyyy");
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
       label.setForeground(Color.WHITE);
@@ -77,7 +74,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createMMText() {
+   private static JLabel createMMText() {
       JLabel label = new JLabel("mm");
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
       label.setForeground(Color.WHITE);
@@ -85,7 +82,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createDDText() {
+   private static JLabel createDDText() {
       JLabel label = new JLabel("dd");
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
       label.setForeground(Color.WHITE);
@@ -93,7 +90,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createHandleText() {
+   private static JLabel createHandleText() {
       JLabel label = new JLabel("your handle name is your full name by default.");
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 10));
       label.setForeground(Color.WHITE);
@@ -101,7 +98,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createAtUserText() {
+   private static JLabel createAtUserText() {
       JLabel label = new JLabel("your username is good!");
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 10));
       label.setForeground(Color.WHITE);
@@ -109,7 +106,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JLabel createAtHudddleUpText() {
+   private static JLabel createAtHudddleUpText() {
       JLabel label = new JLabel("Huddle me up!");
       label.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
       label.setForeground(Color.ORANGE);
@@ -117,7 +114,7 @@ public class SignUpScrollable extends JPanel {
       return label;
    }
 
-   private JPanel createFirstNameTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createFirstNameTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
@@ -155,7 +152,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createMiddleNameTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createMiddleNameTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
@@ -193,7 +190,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createLastNameTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createLastNameTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
@@ -232,7 +229,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createYearTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createYearTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 38, 21);
       panel.setOpaque(false);
@@ -270,7 +267,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createMonthTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createMonthTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 18, 21);
       panel.setOpaque(false);
@@ -308,7 +305,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createDayTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createDayTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 18, 21);
       panel.setOpaque(false);
@@ -346,7 +343,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createHandleTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createHandleTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
@@ -384,7 +381,7 @@ public class SignUpScrollable extends JPanel {
       return panel;
    }
 
-   private JPanel createAtUserTextFieldWithPlaceholder(int x, int y) {
+   private static JPanel createAtUserTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
@@ -423,29 +420,48 @@ public class SignUpScrollable extends JPanel {
    }
 
 
-   private void initializeComponent()
+   private static void initializeComponent()
    {
-      try {
-         background = ImageIO.read(Resources.getResourceAsStream("demoBlurredS.png"));
-      }
-      catch(IOException e) {
-         throw new RuntimeException(e);
-      }
-      setLayout(null);
-      setSize(500, 675);
-      setBackground(new Color(184, 141, 29));
-      setVisible(true);
+      panel = new MoveableComponent()
+      {
+         @Override
+         public void paintComponent(Graphics g)
+         {
+            drawOrangeLines(g);
+         }
+      };
+      panel.setOpaque(false);
+      panel.setLayout(null);
+      panel.setSize(450, 675);
+      panel.setVisible(true);
+
+      panel.addMouseWheelListener(e ->
+      {
+         // Current location of the container panel
+         Point currentPoint = panel.getLocation();
+
+         // Apply sensitivity scaling for trackpad
+         double scrollSensitivity = 20; // Adjust this value as needed
+
+         int newY = (int) (currentPoint.y - e.getPreciseWheelRotation() * scrollSensitivity * (e.isShiftDown() ? 0 : 1));
+         int minY = -panel.getHeight() + panel.getParent().getHeight();
+         newY = Math.min(0, Math.max(minY, newY));
+
+         panel.setLocation(panel.getX(), newY);
+         panel.repaint();
+      });
    }
 
+   @Debug
    public static void main(String[] args)
    {
       JFrame frame = new JFrame();
-      frame.setSize(500, 675);
+      frame.setSize(500, 350);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setLocationRelativeTo(null);
       frame.setUndecorated(true);
 
-      frame.add(new SignUpScrollable());
+      frame.add(panel);
       frame.setVisible(true);
    }
 
@@ -464,25 +480,7 @@ public class SignUpScrollable extends JPanel {
       g2d.drawLine(x1, y2, x2, y1); // Bottom-left to top-right
    }
 
-   private void addCloseIconListener() {
-      addMouseListener(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {
-            int padding = 6;
-            int iconX = 450 + padding;
-            int iconY = 20 + padding;
-            int iconSize = 30 - 2 * padding;
-
-            Rectangle closeIconBounds = new Rectangle(iconX, iconY, iconSize, iconSize);
-
-            if (closeIconBounds.contains(e.getPoint())) {
-               System.exit(0); // Exit the program
-            }
-         }
-      });
-   }
-
-   private void drawOrangeLines(Graphics g) {
+   private static void drawOrangeLines(Graphics g) {
       Graphics2D g2d = (Graphics2D) g;
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -503,21 +501,6 @@ public class SignUpScrollable extends JPanel {
       g2d.fillRect(57, 470, 272, 2); // x, y, width, height
 
       g2d.fillRect(57, 533, 272, 2); // x, y, width, height
-   }
-
-   @Override
-   public void paintComponent(Graphics g)
-   {
-      //
-      Graphics2D graphics = background.createGraphics();
-      graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      graphics.drawImage(background, 0, 0, null);
-
-      g.drawImage(background, 0, 0, getWidth(),getHeight(),null);
-
-      drawOrangeLines(g);
-      drawCloseIcon(g);
-
    }
 
 }

@@ -23,6 +23,8 @@ public class ScrollPane extends MoveableComponent
     public boolean isDragging;
     
     private boolean touchscreen;
+    private boolean horizontalScroll;
+    private boolean verticalScroll;
 
     public ScrollPane()
     {
@@ -160,12 +162,10 @@ public class ScrollPane extends MoveableComponent
         // Apply sensitivity scaling for trackpad
         double scrollSensitivity = 20; // Adjust this value as needed
 
-        // Calculate new positions for X and Y with scaling factor
         int newX = (int) (currentPoint.x - e.getPreciseWheelRotation() * scrollSensitivity * (e.isShiftDown() ? 1 : 0));
-        int newY = (int) (currentPoint.y - e.getPreciseWheelRotation() * scrollSensitivity * (e.isShiftDown() ? 0 : 1));
-
-        // Boundaries for scrolling
         int minX = -container.getWidth() + container.getParent().getWidth();
+
+        int newY = (int) (currentPoint.y - e.getPreciseWheelRotation() * scrollSensitivity * (e.isShiftDown() ? 0 : 1));
         int minY = -container.getHeight() + container.getParent().getHeight();
 
         // Constrain movement within bounds
@@ -173,6 +173,9 @@ public class ScrollPane extends MoveableComponent
         newY = Math.min(0, Math.max(minY, newY));
 
         // Update container location
+        newX = horizontalScroll? newX : container.getX();
+        newY = verticalScroll? newY : container.getY();
+
         container.setLocation(newX, newY);
         container.repaint();
         repaint();
@@ -293,5 +296,15 @@ public class ScrollPane extends MoveableComponent
         comp.setOpaque(false);
         add(container);
         add(glassPane);
+    }
+
+    public void setHorizontalScroll(boolean b)
+    {
+        horizontalScroll = b;
+    }
+
+    public void setVerticalScroll(boolean b)
+    {
+        verticalScroll = b;
     }
 }
