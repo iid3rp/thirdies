@@ -1,12 +1,14 @@
 package thirds.scratch;
 
+import thirds.application.SignUpMenu;
 import thirds.io.Debug;
 import thirds.swing.MoveableComponent;
-import thirds.swing.ScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class SignUpScrollable
 {
@@ -22,7 +24,7 @@ public class SignUpScrollable
       panel.add(createDDText());
       panel.add(createAtUserText());
       panel.add(createHandleText());
-      panel.add(createAtHudddleUpText());
+      panel.add(createAtHuddleUpText());
       panel.add(createFirstNameTextFieldWithPlaceholder(63, 168));
       panel.add(createMiddleNameTextFieldWithPlaceholder(63, 219));
       panel.add(createLastNameTextFieldWithPlaceholder(63, 274));
@@ -43,10 +45,10 @@ public class SignUpScrollable
               "</html>");
 
       label.setForeground(Color.WHITE);
-      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 35)); // ing ani ang pag change sa font guys
+      label.setFont(new Font("Ebrima", Font.BOLD, 35));
 
-      FontMetrics fm = label.getFontMetrics(label.getFont()); // need ug font metrics para ma base ang text sa text
-      int width = fm.stringWidth(label.getText()) + label.getText().length(); // width sa text niya.
+      FontMetrics fm = label.getFontMetrics(label.getFont());
+      int width = fm.stringWidth(label.getText()) + label.getText().length();
       int height = fm.getHeight();
 
       for(char s : label.getText().toCharArray())
@@ -60,7 +62,7 @@ public class SignUpScrollable
 
    private static JLabel createDOBText() {
       JLabel label = new JLabel("Date of Birth");
-      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
+      label.setFont(new Font("Ebrima", Font.BOLD, 16));
       label.setForeground(Color.WHITE);
       label.setBounds(57, 347, 109, 21);
       return label;
@@ -68,7 +70,7 @@ public class SignUpScrollable
 
    private static JLabel createYYYYText() {
       JLabel label = new JLabel("yyyy");
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
+      label.setFont(new Font("Ebrima", Font.PLAIN, 12));
       label.setForeground(Color.WHITE);
       label.setBounds(70, 396, 30, 18);
       return label;
@@ -76,7 +78,7 @@ public class SignUpScrollable
 
    private static JLabel createMMText() {
       JLabel label = new JLabel("mm");
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
+      label.setFont(new Font("Ebrima", Font.PLAIN, 12));
       label.setForeground(Color.WHITE);
       label.setBounds(119, 396, 30, 18);
       return label;
@@ -84,7 +86,7 @@ public class SignUpScrollable
 
    private static JLabel createDDText() {
       JLabel label = new JLabel("dd");
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
+      label.setFont(new Font("Ebrima", Font.PLAIN, 12));
       label.setForeground(Color.WHITE);
       label.setBounds(158, 396, 30, 18);
       return label;
@@ -92,7 +94,7 @@ public class SignUpScrollable
 
    private static JLabel createHandleText() {
       JLabel label = new JLabel("your handle name is your full name by default.");
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 10));
+      label.setFont(new Font("Ebrima", Font.PLAIN, 10));
       label.setForeground(Color.WHITE);
       label.setBounds(63, 474, 250, 12);
       return label;
@@ -100,15 +102,15 @@ public class SignUpScrollable
 
    private static JLabel createAtUserText() {
       JLabel label = new JLabel("your username is good!");
-      label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 10));
+      label.setFont(new Font("Ebrima", Font.PLAIN, 10));
       label.setForeground(Color.WHITE);
       label.setBounds(63, 539, 150, 12);
       return label;
    }
 
-   private static JLabel createAtHudddleUpText() {
+   private static JLabel createAtHuddleUpText() {
       JLabel label = new JLabel("Huddle me up!");
-      label.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
+      label.setFont(new Font("Ebrima", Font.BOLD, 16));
       label.setForeground(Color.ORANGE);
       label.setBounds(72, 609, 128, 25);
       return label;
@@ -126,7 +128,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -142,7 +144,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("First Name");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -164,7 +166,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -180,7 +182,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("Middle Name");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -202,8 +204,8 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -219,7 +221,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("Last Name");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -241,7 +243,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -257,7 +259,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("2001");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -279,7 +281,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -295,7 +297,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("12");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -317,7 +319,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -333,7 +335,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("31");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -355,7 +357,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -371,7 +373,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("Handle Name");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -393,7 +395,7 @@ public class SignUpScrollable
       textField.setForeground(Color.WHITE);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
-      textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
@@ -409,7 +411,7 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("Handle Name");
-               textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
@@ -434,6 +436,46 @@ public class SignUpScrollable
       panel.setLayout(null);
       panel.setSize(450, 675);
       panel.setVisible(true);
+
+      panel.addMouseListener(new MouseAdapter()
+      {
+         @Override
+         public void mousePressed(MouseEvent e)
+         {
+            if (SwingUtilities.isLeftMouseButton(e))
+            {
+               SignUpMenu.isDragging = true;
+               SignUpMenu.offset = e.getPoint();
+               SignUpMenu.offset.translate(0,panel.getY());
+            }
+         }
+
+         @Override
+         public void mouseReleased(MouseEvent e)
+         {
+            if (SwingUtilities.isLeftMouseButton(e))
+            {
+               SignUpMenu.isDragging = false;
+            }
+         }
+      });
+
+      panel.addMouseMotionListener(new MouseMotionAdapter()
+      {
+         @Override
+         public void mouseDragged(MouseEvent e)
+         {
+            if (SignUpMenu.isDragging)
+            {
+               Point currentMouse = e.getLocationOnScreen();
+
+               int deltaX = currentMouse.x - SignUpMenu.offset.x;
+               int deltaY = currentMouse.y - SignUpMenu.offset.y;
+
+               SignUpMenu.frame.setLocation(deltaX, deltaY);
+            }
+         }
+      });
 
       panel.addMouseWheelListener(e ->
       {
