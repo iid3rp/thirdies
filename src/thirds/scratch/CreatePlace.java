@@ -157,6 +157,7 @@ public class CreatePlace extends JPanel {
         String[] extraInfoLabels = {
                 "Seats per table", "Air Conditioning", "Has Restroom", "Wi-Fi Available", "Price Range",
                 "Lighting Level", "Ambience Level", "Noise Level"
+
         };
 
         extraInfoFields = new JTextField[extraInfoLabels.length];
@@ -167,6 +168,7 @@ public class CreatePlace extends JPanel {
         for (int i = 0; i < extraInfoLabels.length; i++) {
             JLabel label = new JLabel(extraInfoLabels[i]);
             label.setBounds(0, i * 40, 150, 20);
+            label.setFont(new Font("Arial", Font.PLAIN, 18));
             panel.add(label);
 
             JTextField field = new JTextField();
