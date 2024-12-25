@@ -37,35 +37,98 @@ public class CreatePlace extends JPanel {
         add(addImageText);
         add(titleText);
 
-        add(createPlaceNameField(50, 100));
-        add(createPlaceTypeField(50, 180)); // Adjusted y coordinate
+        addReturnIcon();
+        // Inside your constructor or main setup method
+        JLabel previewLabel = createPreviewTextArea(935, 315);//create Place Name preview
+        add(previewLabel);
+
+        JLabel tagPreviewLabel = createPreviewTagsArea(900, 750);//createTagPreview
+        add(tagPreviewLabel);
+
+
+        // Create fields and link to the preview
+        add(createPlaceNameField(50, 100, previewLabel));
+
+        //Create Tag File and link to the preview
+        //add(createTagsField(50, 800));//original tags field//needed
+        add(createTagsField(50, 800, tagPreviewLabel));
+
+
+        add(createPlaceTypeField(50, 180)); // Adjusted y coordinate//needed
         add(createAddressField(50, 260));   // Adjusted y coordinate
 
-//        add(createPlaceNameField(50, 100));
-//        add(createPlaceTypeField(50, 150));
-//        add(createAddressField(50, 200));
+
         add(createZipCodeField(340, 180));
 
         add(createLocationButton(50, 340));
-/// /////
+
         add(createPriceRangeSection(220, 440));
 
         add(createImageUploadArea(630, 100));
+        add(createImagePreviewPanel(935,75));
+
+        add(createDescriptionField(910, 400));
+        add(createTagsPreviewText());
 
         add(createFacilitiesSection(50, 490));
         add(createSlidersSection(50, 610));
         add(createRatingSection(50, 730));
-        add(createTagsField(50, 800));
-       add(createSeatCapacityField(50,410));
 
+        JLabel extraInfoLabel = createExtraInfoLabel(910, 615, "N/A");  // Default value
+        add(extraInfoLabel);  // Add the label to the UI
+
+// Add the seat capacity field and pass the label for updates
+        add(createSeatCapacityField(50, 410, extraInfoLabel));
         addCloseIconListener();
     }
 
     private void initializeComponent() {
         setLayout(null);
-        setSize(1200, 950);
+        setSize(1280, 720);
         setBackground(new Color(255, 255, 255, 255));
         setVisible(true);
+    }
+
+
+    private void addReturnIcon () {
+        try {
+            BufferedImage settingsIcon = ImageIO.read(Resources.getResourceAsStream("returnicon.png"));
+            JLabel iconLabel = new JLabel(new ImageIcon(settingsIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+            iconLabel.setSize(40, 40);
+            iconLabel.setLocation(15, 5);
+            add(iconLabel);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load settings icon", e);
+        }
+
+
+}
+    private JLabel createExtraInfoLabel(int x, int y, String seatCapacity) {
+
+        JLabel extraInfoLabel = new JLabel("<html><strong>Extra Information:</strong>" +
+                "<br><br>Seat Capacity: " + seatCapacity + " </html>");
+        extraInfoLabel.setBounds(x, y, 250, 80); // Set dimensions for the label
+        extraInfoLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 14));
+        extraInfoLabel.setForeground(Color.WHITE);
+        extraInfoLabel.setOpaque(true);
+        extraInfoLabel.setBackground(new Color(159, 130, 84));
+        extraInfoLabel.setVerticalAlignment(SwingConstants.TOP); // Align text to the top
+        return extraInfoLabel;
+    }
+
+    private JLabel createTagsPreviewText() {
+        JLabel label = new JLabel();
+        label.setText("Tags");
+        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 25));
+        label.setForeground(Color.BLACK);
+
+        FontMetrics fm = label.getFontMetrics(label.getFont());
+        int width = fm.stringWidth(label.getText()) + label.getText().length();
+        int height = fm.getHeight();
+
+        label.setSize(width, height);
+        label.setLocation(1010, 710);
+        return label;
     }
 
     private JLabel createTitleText() {
@@ -97,6 +160,7 @@ public class CreatePlace extends JPanel {
         return label;
     }
 
+
     private JLabel createPreviewText() {
         JLabel label = new JLabel();
         label.setText("Preview");
@@ -107,7 +171,7 @@ public class CreatePlace extends JPanel {
         int height = fm.getHeight();
 
         label.setSize(width, height);
-        label.setLocation(950, 30);
+        label.setLocation(975, 30);
         return label;
     }
 
@@ -125,14 +189,10 @@ public class CreatePlace extends JPanel {
         return label;
     }
 
-
-    /** DOWN HERE IS PLACE NAME, PLACE TYPE, ADDRESS, ZIP
-     *
-     *
-     */
-    private JPanel createPlaceNameField(int x, int y) {
+    // Creates the Place Name Field and binds it to the preview text area
+    private JPanel createPlaceNameField(int x, int y, JLabel previewLabel) {
         JPanel panel = new JPanel(null);
-        panel.setBounds(x, y, 271, 60); // Increased height to accommodate label
+        panel.setBounds(x, y, 271, 60); // Set dimensions
         panel.setOpaque(false);
 
         JLabel label = new JLabel("Place Name");
@@ -141,20 +201,63 @@ public class CreatePlace extends JPanel {
         label.setForeground(Color.BLACK);
 
         JTextField textField = new JTextField();
-        textField.setBounds(0, 25, 271, 35); // Moved down to make room for label
+        textField.setBounds(0, 25, 271, 35); // Set dimensions
         textField.setOpaque(true);
         textField.setBackground(Color.LIGHT_GRAY);
         textField.setForeground(Color.BLACK);
-        //set the font etc.. for the text fields
-
         textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
         textField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         textField.setHorizontalAlignment(SwingConstants.LEFT);
+
+        // Add a key listener to update the preview on Enter key press
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String text = textField.getText();
+
+                    // Check if text is empty and update the label accordingly
+                    if (text.isEmpty()) {
+                        previewLabel.setText("N/A");
+                        previewLabel.setHorizontalAlignment(SwingConstants.LEFT); // Reset alignment if empty
+                    } else {
+                        previewLabel.setText("<html><div style='text-align: center;'>" + text + "</div></html>");
+                        previewLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center align when text exists
+                    }
+                }
+            }
+        });
 
         panel.add(label);
         panel.add(textField);
         return panel;
     }
+
+
+    // Creates the Preview Text Area
+    private JLabel createPreviewTextArea(int x, int y) {
+        JLabel previewLabel = new JLabel("", SwingConstants.CENTER);
+        previewLabel.setBounds(x, y, 200, 50); // Set dimensions
+        previewLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        previewLabel.setForeground(Color.BLACK);
+        previewLabel.setBackground(new Color(165, 163, 163));
+        previewLabel.setOpaque(true); // To apply the background color
+        previewLabel.setVerticalAlignment(SwingConstants.CENTER); // Center vertically
+        return previewLabel;
+    }
+  private JLabel createPreviewTagsArea(int x, int y) {
+        JLabel previewLabel = new JLabel("", SwingConstants.CENTER);
+       previewLabel.setBounds(x, y, 271, 100); // Set dimensions
+       previewLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+       previewLabel.setForeground(Color.BLACK);
+        previewLabel.setBackground(new Color(165, 163, 163));
+        previewLabel.setOpaque(true); // To apply the background color
+        previewLabel.setVerticalAlignment(SwingConstants.CENTER); // Center vertically
+       return previewLabel;
+   }
+
+
+
 
     private JPanel createPlaceTypeField(int x, int y) {
         JPanel panel = new JPanel(null);
@@ -236,9 +339,8 @@ public class CreatePlace extends JPanel {
         return button;
     }
 
-    //////SEAT CAPACITY /////SEAT CAPACITY
-
-    private JPanel createSeatCapacityField(int x, int y) {
+    /// ////////SEAT CAPACITY
+    private JPanel createSeatCapacityField(int x, int y, JLabel extraInfoLabel) {
         JPanel panel = new JPanel(null);
         panel.setBounds(x, y, 250, 90);
         panel.setOpaque(false);
@@ -249,26 +351,25 @@ public class CreatePlace extends JPanel {
         label.setForeground(Color.BLACK);
 
         JTextField textField = new JTextField();
-        textField.setBounds(0, 30, 60, 30);
+        textField.setBounds(0, 30, 90, 30);
         textField.setOpaque(true);
         textField.setBackground(Color.LIGHT_GRAY);
         textField.setForeground(Color.BLACK);
         textField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
         textField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
+        // Action listener to update the extraInfoLabel with the seat capacity
+        textField.addActionListener(e -> {
+            String seatCapacity = textField.getText();
+            extraInfoLabel.setText("<html><strong>Extra Information:</strong>" +
+                    "<br><br>Seat Capacity: " + seatCapacity + "</html>");
+        });
+
         panel.add(label);
         panel.add(textField);
         return panel;
     }
 
-
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
     private JPanel createPriceRangeSection(int x, int y) {
         JPanel panel = new JPanel(null);
         panel.setBounds(x, y, 350, 80); // Adjust the height as needed
@@ -314,7 +415,7 @@ public class CreatePlace extends JPanel {
 
         return panel;
     }
-///
+    ///
 
     private JPanel createImageUploadArea(int x, int y) {
         int panelWidth = 200; // Width of the image upload area
@@ -349,7 +450,7 @@ public class CreatePlace extends JPanel {
 
         return panel;
     }
-/// //////
+
     private void displayImage(File imageFile, JPanel imagePanel) {
         try {
             // Load the image from the selected file
@@ -377,6 +478,44 @@ public class CreatePlace extends JPanel {
             imagePanel.repaint();
         } catch (IOException e) {
             e.printStackTrace(); // Handle exceptions (e.g., file not found)
+        }
+    }
+    /// ///////////
+    private JPanel createImagePreviewPanel(int x, int y) {
+        JPanel previewPanel = new JPanel();
+        previewPanel.setBounds(x, y, 200, 235); // Width = 200, Height = 780
+        previewPanel.setBackground(new Color(165,163,163));
+        previewPanel.setLayout(new BorderLayout());
+
+        previewPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Select an Image");
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    displayPreviewImage(selectedFile, previewPanel);
+                }
+            }
+        });
+
+        return previewPanel;
+    }
+
+    private void displayPreviewImage(File imageFile, JPanel previewPanel) {
+        try {
+            BufferedImage originalImage = ImageIO.read(imageFile);
+            Image scaledImage = originalImage.getScaledInstance(previewPanel.getWidth(), previewPanel.getHeight(), Image.SCALE_SMOOTH);
+
+            JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+            previewPanel.removeAll();
+            previewPanel.add(imageLabel, BorderLayout.CENTER);
+
+            previewPanel.revalidate();
+            previewPanel.repaint();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -440,7 +579,7 @@ public class CreatePlace extends JPanel {
 
         return panel;
     }
-///////////////
+
     private JPanel createRatingSection(int x, int y) {
         JPanel panel = new JPanel(null);
         panel.setBounds(x, y, 350, 30);
@@ -482,9 +621,40 @@ public class CreatePlace extends JPanel {
         return panel;
     }
 
-    private JPanel createTagsField(int x, int y) {
+
+    private JPanel createDescriptionField(int x, int y) {
         JPanel panel = new JPanel(null);
-        panel.setBounds(x, y, 271, 100); // Height to accommodate both label and text area
+        panel.setBounds(x, y, 700, 200); // Height to accommodate both label and text area
+        panel.setOpaque(false);
+
+        JLabel label = new JLabel("Description");
+        label.setBounds(80, 0, 271, 20); // Height for the label
+        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+
+        label.setForeground(Color.BLACK);
+
+        // Use JTextArea instead of JTextField for better control over text positioning
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(0, 25, 250, 200); // Adjusted height for the text area
+        textArea.setOpaque(true);
+        textArea.setBackground(new Color(159, 130, 84));
+        textArea.setForeground(Color.WHITE);
+        textArea.setFont(new Font("Kantumruy Pro", Font.BOLD, 12));
+        textArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        textArea.setLineWrap(true); // Allow line wrapping
+        textArea.setWrapStyleWord(true); // Wrap at word boundaries
+        textArea.setMargin(new Insets(5, 5, 0, 25)); // Set margin to position text at the top left
+
+        panel.add(label);
+        panel.add(textArea);
+        return panel;
+    }
+
+
+
+    private JPanel createTagsField(int x, int y, JLabel previewLabel) {
+        JPanel panel = new JPanel(null);
+        panel.setBounds(x, y, 271, 250); // Height to accommodate both label and text area
         panel.setOpaque(false);
 
         JLabel label = new JLabel("Enter Tags");
@@ -492,9 +662,8 @@ public class CreatePlace extends JPanel {
         label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
         label.setForeground(Color.BLACK);
 
-        // Use JTextArea instead of JTextField for better control over text positioning
         JTextArea textArea = new JTextArea();
-        textArea.setBounds(0, 25, 271, 90); // Adjusted height for the text area
+        textArea.setBounds(0, 25, 271, 110); // Adjusted height for the text area
         textArea.setOpaque(true);
         textArea.setBackground(Color.LIGHT_GRAY);
         textArea.setForeground(Color.BLACK);
@@ -504,14 +673,32 @@ public class CreatePlace extends JPanel {
         textArea.setWrapStyleWord(true); // Wrap at word boundaries
         textArea.setMargin(new Insets(5, 5, 0, 0)); // Set margin to position text at the top left
 
+        // Add a key listener to update the preview on Enter key press
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String tags = textArea.getText();
+
+                    // Update the preview label
+                    if (previewLabel != null) {
+                        if (tags.isEmpty()) {
+                            previewLabel.setText("N/A");
+                        } else {
+                            // Format tags for display in the preview
+                            previewLabel.setText("<html><div style='text-align: center;'>" + tags.replace("\n", "<br>") + "</div></html>");
+                        }
+                    }
+                }
+            }
+        });
+
         panel.add(label);
         panel.add(textArea);
         return panel;
     }
-//    JLabel label = new JLabel("Place Name");
-//        label.setBounds(0, 0, 271, 20);
-//        label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
-//        label.setForeground(Color.BLACK);
+
+
 
 
     private void setupPlaceholderBehavior(JTextField textField, String placeholder) {
@@ -554,7 +741,7 @@ public class CreatePlace extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawRectangle(g, 585, 75, 285, 835);
+        drawRectangle(g, 585, 80, 285, 835);
         drawCloseIcon(g);
     }
 
