@@ -23,8 +23,8 @@ public class ScrollPane extends MoveableComponent
     public boolean isDragging;
     
     private boolean touchscreen;
-    private boolean horizontalScroll;
-    private boolean verticalScroll;
+    private boolean horizontalScroll = true;
+    private boolean verticalScroll = true;
 
     public ScrollPane()
     {
@@ -150,7 +150,6 @@ public class ScrollPane extends MoveableComponent
     {
         if(timer != null && timer.isRunning()) {
             timer.stop();
-
         }
     }
 
