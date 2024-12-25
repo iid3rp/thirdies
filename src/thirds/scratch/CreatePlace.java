@@ -196,7 +196,7 @@ public class CreatePlace extends JPanel {
         info.append("</html>");
         previewExtraInfo.setText(info.toString());
     }
-
+    //for the push
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Create Place");
