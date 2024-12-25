@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.application;
 
 import thirds.io.Resources;
 import thirds.place.Place;
