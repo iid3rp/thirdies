@@ -1,6 +1,7 @@
 package thirds.scratch;
 
 import thirds.io.Resources;
+import thirds.swing.MoveableComponent;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -11,54 +12,74 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class CreatePlace extends JPanel {
-    private JLabel previewPlaceName; // Global reference for preview label
-    private JLabel previewImage;
-    private JLabel previewExtraInfo;
-    private JLabel imagePreview;
-    private JTextField[] extraInfoFields;
+public class CreatePlace {
+    private static JLabel previewPlaceName; // Global reference for preview label
+    private static JLabel previewImage;
+    private static JLabel previewExtraInfo;
+    private static JLabel imagePreview;
+    private static JTextField[] extraInfoFields;
 
-    public CreatePlace() {
-        super();
+    private static final MoveableComponent panel = new MoveableComponent() {
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            drawVerticalLine(g, 665);
+        }
+
+        private void drawVerticalLine(Graphics g, int x) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            g2d.setColor(new Color(125, 94, 51));
+            g2d.drawLine(x, 0, x, 720);
+        }
+    };
+
+    static {
         initializeComponent();
     }
 
-    private void initializeComponent() {
-        setLayout(null);
-        setSize(1000, 720);
-        setBackground(Color.WHITE);
+    private CreatePlace()
+    {
+        throw new IllegalStateException("Utility class. Not to be instantiated.");
+    }
 
-        add(returnicon());
+    private static void initializeComponent() {
+        panel.setLayout(null);
+        panel.setSize(1000, 720);
+        panel.setBackground(Color.WHITE);
+
+        panel.add(returnIcon());
 
         //basic texts only
-        add(createTitleLabel());
-        add(createPreviewLabel());
-        add(createDescriptionField());
-        add(createExtraInformationLabel());
+        panel.add(createTitleLabel());
+        panel.add(createPreviewLabel());
+        panel.add(createDescriptionField());
+        panel.add(createExtraInformationLabel());
 
-
-        add(createPlaceNameField()); // Add PlaceName field panel
-        add(createPlaceTypeField());
-        add(createAddressField());
-        add(createPlacePinnedLocationButton());
-        add(createDoneButton());
+        panel.add(createPlaceNameField()); // Add PlaceName field panel
+        panel.add(createPlaceTypeField());
+        panel.add(createAddressField());
+        panel.add(createPlacePinnedLocationButton());
+        panel.add(createDoneButton());
 
         //Bottom sections
-        add(createImageSection());
-        add(createExtraInfoSection());
+        panel.add(createImageSection());
+        panel.add(createExtraInfoSection());
 
         //fields TextArea
-        add(createTagsField());
-        add(createDescriptionField());
+        panel.add(createTagsField());
+        panel.add(createDescriptionField());
 
         //star rating
-        add(createStarRatingSection());
+        panel.add(createStarRatingSection());
 
     }
 
-    private JLabel returnicon() {
+    private static JLabel returnIcon() 
+    {
         try {
-            BufferedImage settingsIcon = ImageIO.read(Resources.getResourceAsStream("returnicon.png"));
+            BufferedImage settingsIcon = ImageIO.read(Resources.getResourceAsStream("returnIcon.png"));
 
             ImageIcon icon = new ImageIcon(settingsIcon.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 
@@ -76,34 +97,32 @@ public class CreatePlace extends JPanel {
             return iconLabel;
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
     }
 
     // exit the application
-    private void exitApplication() {
+    private static void exitApplication() {
         System.exit(0);
     }
 
-
     // Title Section
-    private JLabel createTitleLabel() {
+    private static JLabel createTitleLabel() {
         JLabel titleLabel = new JLabel("Create Place");
-        titleLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Ebrima", Font.BOLD, 24));
         titleLabel.setBounds(35, 35, 300, 30);
         return titleLabel;
     }
 
-    private JLabel createPreviewLabel() {
+    private static JLabel createPreviewLabel() {
         JLabel titleLabel = new JLabel("'Preview'");
-        titleLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Ebrima", Font.BOLD, 24));
         titleLabel.setForeground(Color.BLACK); // Set the text color to white
         titleLabel.setBounds(785, 665, 300, 30);
         return titleLabel;
     }
 
-    private JLabel createExtraInformationLabel() {
+    private static JLabel createExtraInformationLabel() {
         JLabel titleLabel = new JLabel("Extra Information:");
         titleLabel.setFont(new Font("Montserrat", Font.PLAIN, 18));
         titleLabel.setForeground(Color.BLACK); // Set the text color to white
@@ -111,7 +130,7 @@ public class CreatePlace extends JPanel {
         return titleLabel;
     }
 
-    private JPanel createDescriptionField() {
+    private static JPanel createDescriptionField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(680, 250, 321, 160);
         panel.setBackground(new Color(125, 94, 51));
@@ -124,17 +143,8 @@ public class CreatePlace extends JPanel {
         DescriptionLabel.setBounds(0, 0, 100, 25);
         panel.add(DescriptionLabel);
 
-
         //Text area for entering tags
-        JTextArea DescriptionArea = new JTextArea();
-        DescriptionArea.setBounds(0, 25, 321, 160);
-        DescriptionArea.setLineWrap(true); // Enable automatic word wrapping
-        DescriptionArea.setWrapStyleWord(true); // Wrap at word boundaries
-        DescriptionArea.setOpaque(true);
-        DescriptionArea.setForeground(Color.WHITE);
-        DescriptionArea.setFont(new Font("Kantumruy Pro", Font.PLAIN, 14));
-        DescriptionArea.setBorder(BorderFactory.createLineBorder(new Color(125, 94, 51))); // White color border
-        DescriptionArea.setBackground(new Color(125, 94, 51));
+        JTextArea DescriptionArea = createDescriptionArea();
 
         // Key listener for handling space as a delimiter
 
@@ -142,15 +152,28 @@ public class CreatePlace extends JPanel {
         return panel;
     }
 
+    private static JTextArea createDescriptionArea()
+    {
+        JTextArea DescriptionArea = new JTextArea();
+        DescriptionArea.setBounds(0, 25, 321, 160);
+        DescriptionArea.setLineWrap(true); // Enable automatic word wrapping
+        DescriptionArea.setWrapStyleWord(true); // Wrap at word boundaries
+        DescriptionArea.setOpaque(true);
+        DescriptionArea.setForeground(Color.WHITE);
+        DescriptionArea.setFont(new Font("Ebrima", Font.PLAIN, 14));
+        DescriptionArea.setBorder(BorderFactory.createLineBorder(new Color(125, 94, 51))); // White color border
+        DescriptionArea.setBackground(new Color(125, 94, 51));
+        return DescriptionArea;
+    }
 
     // Place Name Field
-    private JPanel createPlaceNameField() {
+    private static JPanel createPlaceNameField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(0, 0, 260, 160);
         panel.setOpaque(false); // Make the panel transparent
 
         JLabel placeNameLabel = new JLabel("Place Name");
-        placeNameLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 19));
+        placeNameLabel.setFont(new Font("Ebrima", Font.PLAIN, 19));
         placeNameLabel.setBounds(35, 90, 150, 20);
         panel.add(placeNameLabel);
 
@@ -158,17 +181,17 @@ public class CreatePlace extends JPanel {
         placeNameField.setBounds(35, 115, 220, 40);
         placeNameField.setOpaque(true);
         placeNameField.setForeground(Color.DARK_GRAY);
-        placeNameField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        placeNameField.setFont(new Font("Ebrima", Font.PLAIN, 18));
         placeNameField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         placeNameField.setBackground(Color.lightGray);
         panel.add(placeNameField);
 
         // Initialize the previewPlaceName global label with left alignment and white font color
         previewPlaceName = new JLabel("<html><font color='white'>Place Name</font></html>", SwingConstants.LEFT);
-        previewPlaceName.setFont(new Font("Kantumruy Pro", Font.BOLD, 30));
+        previewPlaceName.setFont(new Font("Ebrima", Font.BOLD, 30));
         previewPlaceName.setHorizontalAlignment(SwingConstants.LEFT); // Ensure left alignment
         previewPlaceName.setBounds(690, 108, 260, 100);
-        add(previewPlaceName); // Add to the main panel
+        CreatePlace.panel.add(previewPlaceName); // Add to the main panel
 
         // Add KeyListener to update the preview label
         placeNameField.addKeyListener(new KeyAdapter() {
@@ -188,13 +211,13 @@ public class CreatePlace extends JPanel {
         return panel;
     }
 
-    private JPanel createPlaceTypeField() {
+    private static JPanel createPlaceTypeField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(35, 170, 230, 70);
         panel.setOpaque(false); // Make the panel transparent
 
         JLabel placeTypeLabel = new JLabel("Place Type");
-        placeTypeLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 19));
+        placeTypeLabel.setFont(new Font("Ebrima", Font.PLAIN, 19));
         placeTypeLabel.setBounds(0, 0, 120, 25);
         panel.add(placeTypeLabel);
 
@@ -202,20 +225,20 @@ public class CreatePlace extends JPanel {
         placeTypeField.setBounds(0, 25, 220, 40);
         placeTypeField.setOpaque(true);
         placeTypeField.setForeground(Color.DARK_GRAY);
-        placeTypeField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        placeTypeField.setFont(new Font("Ebrima", Font.PLAIN, 18));
         placeTypeField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         placeTypeField.setBackground(Color.lightGray);
         panel.add(placeTypeField);
         return panel;
     }
 
-    private JPanel createAddressField() {
+    private static JPanel createAddressField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(35, 245, 230, 80);
         panel.setOpaque(false); // Make the panel transparent
 
         JLabel AddressLabel = new JLabel("Place Address");
-        AddressLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 19));
+        AddressLabel.setFont(new Font("Ebrima", Font.PLAIN, 19));
         AddressLabel.setBounds(0, 10, 130, 20);
         panel.add(AddressLabel);
 
@@ -223,17 +246,17 @@ public class CreatePlace extends JPanel {
         AdressField.setBounds(0, 35, 220, 40);
         AdressField.setOpaque(true);
         AdressField.setForeground(Color.DARK_GRAY);
-        AdressField.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
+        AdressField.setFont(new Font("Ebrima", Font.PLAIN, 18));
         AdressField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         AdressField.setBackground(Color.lightGray);
         panel.add(AdressField);
         return panel;
     }
 
-    private JButton createPlacePinnedLocationButton() {
+    private static JButton createPlacePinnedLocationButton() {
         JButton button = new JButton("Place Pinned Location");
-        button.setBounds(35, 335, 210, 40);
-        button.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+        button.setBounds(35, 335, 220, 40);
+        button.setFont(new Font("Ebrima", Font.PLAIN, 16));
         button.setForeground(Color.BLACK);
         button.setBackground(Color.LIGHT_GRAY);
         button.setBorderPainted(false);
@@ -264,7 +287,7 @@ public class CreatePlace extends JPanel {
 
 
     // Image Upload Section
-    private JPanel createImageSection() {
+    private static JPanel createImageSection() {
         JPanel panel = new JPanel(null);
         panel.setBounds(35, 390, 250, 300);
         panel.setOpaque(false); // Make the panel transparent
@@ -272,7 +295,7 @@ public class CreatePlace extends JPanel {
         // Label for the Image Section
         JLabel imageLabel = new JLabel("Image");
         imageLabel.setBounds(0, 0, 60, 25);
-        imageLabel.setFont(new Font("Kantumruy Pro", Font.PLAIN, 19));
+        imageLabel.setFont(new Font("Ebrima", Font.PLAIN, 19));
         panel.add(imageLabel);
 
         // Image preview label
@@ -283,7 +306,7 @@ public class CreatePlace extends JPanel {
 
         // Upload Image Button
         JButton uploadImageButton = new JButton("Upload Image");
-        uploadImageButton.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+        uploadImageButton.setFont(new Font("Ebrima", Font.PLAIN, 16));
         uploadImageButton.setForeground(Color.WHITE);
         uploadImageButton.setBounds(0, 220, 120, 40);
         uploadImageButton.setBackground(new Color(125, 94, 51));
@@ -292,13 +315,7 @@ public class CreatePlace extends JPanel {
         panel.add(uploadImageButton);
 
         // Delete Image Button
-        JButton deleteImageButton = new JButton("X");
-        deleteImageButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
-        deleteImageButton.setForeground(Color.WHITE);
-        deleteImageButton.setBounds(130, 220, 35, 40); // Positioned next to the upload button
-        deleteImageButton.setBackground(new Color(125, 94, 51));
-        deleteImageButton.setBorder(new LineBorder(Color.LIGHT_GRAY));
-        deleteImageButton.addActionListener(e -> handleImageDelete()); // Action listener for delete
+        JButton deleteImageButton = createDeleteImageButton();
         panel.add(deleteImageButton);
 
         // Initialize the previewImage label with gray background
@@ -307,13 +324,25 @@ public class CreatePlace extends JPanel {
         previewImage.setBackground(Color.LIGHT_GRAY); // Set default gray background
         previewImage.setOpaque(true); // Ensure the background color is visible
         previewImage.setBorder(new LineBorder(Color.LIGHT_GRAY));
-        add(previewImage);
+        CreatePlace.panel.add(previewImage);
 
         return panel;
     }
 
+    private static JButton createDeleteImageButton()
+    {
+        JButton deleteImageButton = new JButton("X");
+        deleteImageButton.setFont(new Font("Ebrima", Font.BOLD, 16));
+        deleteImageButton.setForeground(Color.WHITE);
+        deleteImageButton.setBounds(130, 220, 35, 40); // Positioned next to the upload button
+        deleteImageButton.setBackground(new Color(125, 94, 51));
+        deleteImageButton.setBorder(new LineBorder(Color.LIGHT_GRAY));
+        deleteImageButton.addActionListener(e -> handleImageDelete()); // Action listener for delete
+        return deleteImageButton;
+    }
+
     // Image upload handler method
-    private void handleImageUpload() {
+    private static void handleImageUpload() {
         JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -328,13 +357,13 @@ public class CreatePlace extends JPanel {
                 previewImage.setIcon(new ImageIcon(scaledImg));
                 imagePreview.setIcon(new ImageIcon(scaledImg));
             } catch (IOException ex) {
-                ex.printStackTrace();
+                throw new RuntimeException();
             }
         }
     }
 
     // Image delete handler method
-    private void handleImageDelete() {
+    private static void handleImageDelete() {
         // Reset the image preview in both imagePreview and previewImage
         imagePreview.setIcon(null); // Remove the image from the imagePreview
         previewImage.setIcon(null); // Remove the image from the previewImage
@@ -342,8 +371,7 @@ public class CreatePlace extends JPanel {
         System.out.println("Image deleted"); // You can perform additional actions here if needed
     }
 
-
-    private JPanel createTagsField() {
+    private static JPanel createTagsField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(300, 385, 310, 285);
         panel.setOpaque(false); // Make the panel transparent
@@ -355,15 +383,7 @@ public class CreatePlace extends JPanel {
         panel.add(tagsLabel);
 
         // Text area for entering tags
-        JTextArea tagsArea = new JTextArea();
-        tagsArea.setBounds(0, 25, 280, 225);
-        tagsArea.setLineWrap(true); // Enable automatic word wrapping
-        tagsArea.setWrapStyleWord(true); // Wrap at word boundaries
-        tagsArea.setOpaque(true);
-        tagsArea.setForeground(Color.DARK_GRAY);
-        tagsArea.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
-        tagsArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        tagsArea.setBackground(Color.LIGHT_GRAY);
+        JTextArea tagsArea = createTagsTextArea();
 
         // Key listener for handling space as a delimiter
 
@@ -371,9 +391,23 @@ public class CreatePlace extends JPanel {
         return panel;
     }
 
-    private JButton createDoneButton() {
+    private static JTextArea createTagsTextArea()
+    {
+        JTextArea tagsArea = new JTextArea();
+        tagsArea.setBounds(0, 25, 280, 225);
+        tagsArea.setLineWrap(true); // Enable automatic word wrapping
+        tagsArea.setWrapStyleWord(true); // Wrap at word boundaries
+        tagsArea.setOpaque(true);
+        tagsArea.setForeground(Color.DARK_GRAY);
+        tagsArea.setFont(new Font("Ebrima", Font.PLAIN, 18));
+        tagsArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        tagsArea.setBackground(Color.LIGHT_GRAY);
+        return tagsArea;
+    }
+
+    private static JButton createDoneButton() {
         JButton doneButton = new JButton("Done");
-        doneButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
+        doneButton.setFont(new Font("Ebrima", Font.BOLD, 18));
         doneButton.setForeground(Color.GREEN);
         doneButton.setBounds(555, 0, 50, 40); // Use the original bounds
         doneButton.setBackground(new Color(255, 255, 255)); // Light brown color
@@ -407,7 +441,7 @@ public class CreatePlace extends JPanel {
     }
 
     // Extra Information Section
-    private JPanel createExtraInfoSection() {
+    private static JPanel createExtraInfoSection() {
         JPanel panel = new JPanel(null);
         panel.setBounds(350, 45, 300, 325);
         panel.setOpaque(false);
@@ -420,19 +454,19 @@ public class CreatePlace extends JPanel {
         extraInfoFields = new JTextField[extraInfoLabels.length];
         previewExtraInfo = new JLabel("<html></html>");
         previewExtraInfo.setBounds(680, 410, 250, 200);
-        previewExtraInfo.setFont(new Font("Kantumruy Pro", Font.PLAIN, 12));
-        add(previewExtraInfo);
+        previewExtraInfo.setFont(new Font("Ebrima", Font.PLAIN, 12));
+        CreatePlace.panel.add(previewExtraInfo);
 
         for (int i = 0; i < extraInfoLabels.length; i++) {
             JLabel label = new JLabel(extraInfoLabels[i]);
             label.setBounds(0, i * 40, 150, 20);
-            label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+            label.setFont(new Font("Ebrima", Font.PLAIN, 16));
             panel.add(label);
 
             JTextField field = new JTextField();
             field.setBackground(Color.LIGHT_GRAY);
             field.setForeground(Color.DARK_GRAY);
-            field.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
+            field.setFont(new Font("Ebrima", Font.PLAIN, 16));
             field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
             field.setBounds(160, i * 40, 150, 30);
             extraInfoFields[i] = field;
@@ -442,19 +476,19 @@ public class CreatePlace extends JPanel {
         return panel;
     }
 
-    private void updateExtraInfoPreview(String[] labels) {
+    private static void updateExtraInfoPreview(String[] labels) {
         StringBuilder info = new StringBuilder("<html>");
         for (int i = 0; i < labels.length; i++) {
             String value = extraInfoFields[i].getText();
             if (!value.isEmpty()) {
-                info.append(labels[i]).append(":&nbsp;&nbsp;&nbsp;&nbsp;").append(value).append("<br>");
+                info.append(labels[i]).append(":    ").append(value).append("<br>");
             }
         }
         info.append("</html>");
         previewExtraInfo.setText(info.toString());
     }
 
-    private JPanel createStarRatingSection() {
+    private static JPanel createStarRatingSection() {
         JPanel panel = new JPanel(null);
         panel.setBounds(680, 600, 300, 30); // Adjust width if needed
         panel.setOpaque(true);
@@ -462,7 +496,7 @@ public class CreatePlace extends JPanel {
 
         JLabel label = new JLabel("Rating:");
         label.setBounds(0, 0, 60, 30);
-        label.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
+        label.setFont(new Font("Ebrima", Font.BOLD, 16));
         label.setForeground(Color.BLACK);
         panel.add(label);
 
@@ -471,7 +505,7 @@ public class CreatePlace extends JPanel {
         // JLabel to display rating as n/5
         JLabel ratingDisplay = new JLabel("0/5");
         ratingDisplay.setBounds(235, 0, 60, 30);
-        ratingDisplay.setFont(new Font("Kantumruy Pro", Font.PLAIN, 14));
+        ratingDisplay.setFont(new Font("Ebrima", Font.PLAIN, 14));
         ratingDisplay.setForeground(Color.BLACK);
         panel.add(ratingDisplay);
 
@@ -483,7 +517,7 @@ public class CreatePlace extends JPanel {
             final int rating = i + 1; // Rating value (1 to 5)
             JLabel star = new JLabel("★");
             star.setBounds(starX, 0, 30, 30);
-            star.setFont(new Font("Kantumruy Pro", Font.PLAIN, 25));
+            star.setFont(new Font("Ebrima", Font.PLAIN, 25));
             star.setForeground(Color.GRAY); // Default color for unselected stars
             stars[i] = star; // Store each star label in the array
 
@@ -512,18 +546,9 @@ public class CreatePlace extends JPanel {
         return panel;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        drawVerticalLine(g, 665);
-    }
-
-    private void drawVerticalLine(Graphics g, int x) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2d.setColor(new Color(125, 94, 51));
-        g2d.drawLine(x, 0, x, 720);
+    public static MoveableComponent getPanel()
+    {
+        return panel;
     }
 
     //for the push
@@ -533,7 +558,7 @@ public class CreatePlace extends JPanel {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 720);
             frame.setLocationRelativeTo(null);
-            frame.add(new CreatePlace());
+            frame.add(getPanel());
             frame.setUndecorated(true);
             frame.setVisible(true);
         });
