@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.interfaces;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

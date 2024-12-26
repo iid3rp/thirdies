@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.interfaces;
 
 import thirds.io.Resources;
 import thirds.swing.MoveableComponent;
@@ -13,11 +13,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class CreatePlace {
-    private static JLabel previewPlaceName; // Global reference for preview label
+    private static JLabel previewPlaceName;
     private static JLabel previewImage;
     private static JLabel previewExtraInfo;
     private static JLabel imagePreview;
     private static JTextField[] extraInfoFields;
+    private static BufferedImage image;
 
     private static final MoveableComponent panel = new MoveableComponent() {
         @Override
@@ -35,7 +36,8 @@ public class CreatePlace {
         }
     };
 
-    static {
+    static
+    {
         initializeComponent();
     }
 

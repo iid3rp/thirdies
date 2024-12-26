@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.interfaces;
 
 import thirds.application.SignUpMenu;
 import thirds.swing.MoveableComponent;
@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 
 ////Testing for branch commit java documentation
@@ -49,6 +48,16 @@ public class LogInScreen
 
         label.setSize(width, height); // width and height.
         label.setLocation(67, 270); // x and y.
+
+        label.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                panel.move(-500, 0, 250);
+                LoggedInScreen.getPanel().move(0, 0, 250);
+            }
+        });
         return label;
     }
 
