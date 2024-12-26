@@ -2,6 +2,7 @@ package thirds.application;
 
 import thirds.io.Resources;
 import thirds.scratch.LogInScreen;
+import thirds.scratch.LoggedInScreen;
 import thirds.scratch.SignUpScreen;
 import thirds.scratch.SignUpScrollable;
 import thirds.swing.MoveableComponent;
@@ -105,6 +106,9 @@ public class SignUpMenu
 
         SignUpScrollable.panel.setLocation(500, 0);
         panel.add(SignUpScrollable.panel);
+
+        LoggedInScreen.getPanel().setLocation(500, 0);
+        panel.add(LoggedInScreen.getPanel());
 
         frame.setVisible(true);
 

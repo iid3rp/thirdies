@@ -149,7 +149,7 @@ public class AccountInfo {
          throw new RuntimeException("Failed to load background image", e);
       }
       panel.setLayout(null); // Set null layout for absolute positioning
-      panel.setSize(new Dimension(300, 720));
+      panel.setSize(new Dimension(330, 720));
       panel.setBackground(new Color(184, 141, 29));
    }
 

@@ -1,5 +1,6 @@
 package thirds.scratch;
 
+import thirds.application.MapApplication;
 import thirds.application.SignUpMenu;
 import thirds.swing.MoveableComponent;
 
@@ -49,6 +50,16 @@ public class LogInScreen
 
         label.setSize(width, height); // width and height.
         label.setLocation(67, 270); // x and y.
+
+        label.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                panel.move(-500, 0, 250);
+                LoggedInScreen.getPanel().move(0, 0, 250);
+            }
+        });
         return label;
     }
 
