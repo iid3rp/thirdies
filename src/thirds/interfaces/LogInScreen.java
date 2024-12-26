@@ -1,6 +1,5 @@
-package thirds.scratch;
+package thirds.interfaces;
 
-import thirds.application.MapApplication;
 import thirds.application.SignUpMenu;
 import thirds.swing.MoveableComponent;
 
@@ -8,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 
 ////Testing for branch commit java documentation

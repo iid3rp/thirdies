@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.interfaces;
 
 import thirds.swing.MoveableComponent;
 import thirds.swing.ScrollPane;

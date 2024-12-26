@@ -2,7 +2,7 @@ package thirds.application;
 
 import thirds.io.Resources;
 import thirds.place.Place;
-import thirds.scratch.AccountInfo;
+import thirds.interfaces.AccountInfo;
 import thirds.swing.Label;
 import thirds.swing.MoveableComponent;
 import thirds.swing.ScrollPane;
