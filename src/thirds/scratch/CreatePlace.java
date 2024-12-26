@@ -1,5 +1,7 @@
 package thirds.scratch;
 
+import thirds.io.Resources;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -25,6 +27,8 @@ public class CreatePlace extends JPanel {
         setLayout(null);
         setSize(1000, 720);
         setBackground(Color.WHITE);
+
+        add(returnicon());
 
         //basic texts only
         add(createTitleLabel());
@@ -52,6 +56,37 @@ public class CreatePlace extends JPanel {
 
     }
 
+    private JLabel returnicon() {
+        try {
+            BufferedImage settingsIcon = ImageIO.read(Resources.getResourceAsStream("returnicon.png"));
+
+            ImageIcon icon = new ImageIcon(settingsIcon.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+
+            JLabel iconLabel = new JLabel(icon);
+            iconLabel.setSize(20, 20);
+            iconLabel.setLocation(35, 10);  // Set location
+
+            // handle click events and exit the application
+            iconLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    exitApplication();  // exit the application when clicked
+                }
+            });
+            return iconLabel;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // exit the application
+    private void exitApplication() {
+        System.exit(0);
+    }
+
+
     // Title Section
     private JLabel createTitleLabel() {
         JLabel titleLabel = new JLabel("Create Place");
@@ -64,7 +99,7 @@ public class CreatePlace extends JPanel {
         JLabel titleLabel = new JLabel("'Preview'");
         titleLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 24));
         titleLabel.setForeground(Color.BLACK); // Set the text color to white
-        titleLabel.setBounds(785, 635, 300, 30);
+        titleLabel.setBounds(785, 665, 300, 30);
         return titleLabel;
     }
 
@@ -80,12 +115,12 @@ public class CreatePlace extends JPanel {
         JPanel panel = new JPanel(null);
         panel.setBounds(680, 250, 321, 160);
         panel.setBackground(new Color(125, 94, 51));
-        panel.setOpaque(false); // Make the panel transparent
+        panel.setOpaque(true); // Make the panel transparent
 
         // Label for the tags section
         JLabel DescriptionLabel = new JLabel("Description");
         DescriptionLabel.setFont(new Font("Montserrat", Font.PLAIN, 19));
-        DescriptionLabel.setForeground(new Color(125, 94, 51));
+        DescriptionLabel.setForeground(new Color(255, 255, 255));
         DescriptionLabel.setBounds(0, 0, 100, 25);
         panel.add(DescriptionLabel);
 
@@ -98,7 +133,7 @@ public class CreatePlace extends JPanel {
         DescriptionArea.setOpaque(true);
         DescriptionArea.setForeground(Color.WHITE);
         DescriptionArea.setFont(new Font("Kantumruy Pro", Font.PLAIN, 14));
-        DescriptionArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        DescriptionArea.setBorder(BorderFactory.createLineBorder(new Color(125, 94, 51))); // White color border
         DescriptionArea.setBackground(new Color(125, 94, 51));
 
         // Key listener for handling space as a delimiter
@@ -350,7 +385,7 @@ public class CreatePlace extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 String[] extraInfoLabels = {
                         "Seats per table", "Air Conditioning", "Has Restroom", "Wi-Fi Available", "Price Range",
-                        "Lighting Level", "Ambience Level", "Noise Level"
+                        "Lighting Level /10", "Ambience Level /10", "Noise Level /10"
                 };
 
                 // Call the updateExtraInfoPreview method when the button is pressed
@@ -379,7 +414,7 @@ public class CreatePlace extends JPanel {
 
         String[] extraInfoLabels = {
                 "Seats per table", "Air Conditioning", "Has Restroom", "Wi-Fi Available", "Price Range",
-                "Lighting Level", "Ambience Level", "Noise Level"
+                "Lighting Level  /10", "Ambience Level  /10", "Noise Level  /10"
         };
 
         extraInfoFields = new JTextField[extraInfoLabels.length];
@@ -431,11 +466,11 @@ public class CreatePlace extends JPanel {
         label.setForeground(Color.BLACK);
         panel.add(label);
 
-        int starX = 60; // Starting x position for the stars, just after the "Rating:" label
+        int starX = 80; // Starting x position for the stars, just after the "Rating:" label
 
         // JLabel to display rating as n/5
         JLabel ratingDisplay = new JLabel("0/5");
-        ratingDisplay.setBounds(210, 0, 60, 30);
+        ratingDisplay.setBounds(235, 0, 60, 30);
         ratingDisplay.setFont(new Font("Kantumruy Pro", Font.PLAIN, 14));
         ratingDisplay.setForeground(Color.BLACK);
         panel.add(ratingDisplay);
@@ -490,8 +525,6 @@ public class CreatePlace extends JPanel {
         g2d.setColor(new Color(125, 94, 51));
         g2d.drawLine(x, 0, x, 720);
     }
-
-
 
     //for the push
     public static void main(String[] args) {
