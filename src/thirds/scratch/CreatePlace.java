@@ -76,8 +76,7 @@ public class CreatePlace extends JPanel {
             return iconLabel;
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
     }
 
@@ -126,6 +125,16 @@ public class CreatePlace extends JPanel {
 
 
         //Text area for entering tags
+        JTextArea DescriptionArea = createDescriptionArea();
+
+        // Key listener for handling space as a delimiter
+
+        panel.add(DescriptionArea);
+        return panel;
+    }
+
+    private static JTextArea createDescriptionArea()
+    {
         JTextArea DescriptionArea = new JTextArea();
         DescriptionArea.setBounds(0, 25, 321, 160);
         DescriptionArea.setLineWrap(true); // Enable automatic word wrapping
@@ -135,11 +144,7 @@ public class CreatePlace extends JPanel {
         DescriptionArea.setFont(new Font("Kantumruy Pro", Font.PLAIN, 14));
         DescriptionArea.setBorder(BorderFactory.createLineBorder(new Color(125, 94, 51))); // White color border
         DescriptionArea.setBackground(new Color(125, 94, 51));
-
-        // Key listener for handling space as a delimiter
-
-        panel.add(DescriptionArea);
-        return panel;
+        return DescriptionArea;
     }
 
 
@@ -232,7 +237,7 @@ public class CreatePlace extends JPanel {
 
     private JButton createPlacePinnedLocationButton() {
         JButton button = new JButton("Place Pinned Location");
-        button.setBounds(35, 335, 210, 40);
+        button.setBounds(35, 335, 220, 40);
         button.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
         button.setForeground(Color.BLACK);
         button.setBackground(Color.LIGHT_GRAY);
@@ -292,13 +297,7 @@ public class CreatePlace extends JPanel {
         panel.add(uploadImageButton);
 
         // Delete Image Button
-        JButton deleteImageButton = new JButton("X");
-        deleteImageButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
-        deleteImageButton.setForeground(Color.WHITE);
-        deleteImageButton.setBounds(130, 220, 35, 40); // Positioned next to the upload button
-        deleteImageButton.setBackground(new Color(125, 94, 51));
-        deleteImageButton.setBorder(new LineBorder(Color.LIGHT_GRAY));
-        deleteImageButton.addActionListener(e -> handleImageDelete()); // Action listener for delete
+        JButton deleteImageButton = createDeleteImageButton();
         panel.add(deleteImageButton);
 
         // Initialize the previewImage label with gray background
@@ -310,6 +309,18 @@ public class CreatePlace extends JPanel {
         add(previewImage);
 
         return panel;
+    }
+
+    private JButton createDeleteImageButton()
+    {
+        JButton deleteImageButton = new JButton("X");
+        deleteImageButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 16));
+        deleteImageButton.setForeground(Color.WHITE);
+        deleteImageButton.setBounds(130, 220, 35, 40); // Positioned next to the upload button
+        deleteImageButton.setBackground(new Color(125, 94, 51));
+        deleteImageButton.setBorder(new LineBorder(Color.LIGHT_GRAY));
+        deleteImageButton.addActionListener(e -> handleImageDelete()); // Action listener for delete
+        return deleteImageButton;
     }
 
     // Image upload handler method
@@ -328,7 +339,7 @@ public class CreatePlace extends JPanel {
                 previewImage.setIcon(new ImageIcon(scaledImg));
                 imagePreview.setIcon(new ImageIcon(scaledImg));
             } catch (IOException ex) {
-                ex.printStackTrace();
+                throw new RuntimeException();
             }
         }
     }
@@ -355,6 +366,16 @@ public class CreatePlace extends JPanel {
         panel.add(tagsLabel);
 
         // Text area for entering tags
+        JTextArea tagsArea = createTagsTextArea();
+
+        // Key listener for handling space as a delimiter
+
+        panel.add(tagsArea);
+        return panel;
+    }
+
+    private static JTextArea createTagsTextArea()
+    {
         JTextArea tagsArea = new JTextArea();
         tagsArea.setBounds(0, 25, 280, 225);
         tagsArea.setLineWrap(true); // Enable automatic word wrapping
@@ -364,11 +385,7 @@ public class CreatePlace extends JPanel {
         tagsArea.setFont(new Font("Kantumruy Pro", Font.PLAIN, 18));
         tagsArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         tagsArea.setBackground(Color.LIGHT_GRAY);
-
-        // Key listener for handling space as a delimiter
-
-        panel.add(tagsArea);
-        return panel;
+        return tagsArea;
     }
 
     private JButton createDoneButton() {
