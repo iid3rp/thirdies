@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.interfaces;
 
 import thirds.swing.MoveableComponent;
 import thirds.swing.ScrollPane;
@@ -103,7 +103,7 @@ public class UITesting
 
         });
 
-        //panel.add(blackBox);
+        panel.add(blackBox);
 
         JLabel brat = getjLabel();
 
@@ -141,6 +141,7 @@ public class UITesting
             JLabel label = new JLabel();
             label.setText("this is a long label with a text number with " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i + " " + i);
             label.setLayout(null);
+            label.setOpaque(false);
             label.setLocation(0, i * 40);
             label.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
             label.setSize(1000, 40);

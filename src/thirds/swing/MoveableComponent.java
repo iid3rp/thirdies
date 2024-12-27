@@ -3,7 +3,6 @@ package thirds.swing;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -62,7 +61,7 @@ public class MoveableComponent extends JPanel
             velocityX *= deceleration;
             velocityY *= deceleration;
 
-            // Stop when velocity is very low
+            // Stop when the velocity is very low
             if (Math.abs(velocityX) < 0.5 && Math.abs(velocityY) < 0.5) {
                 timer.stop();
             }
@@ -123,17 +122,15 @@ public class MoveableComponent extends JPanel
                 setSize(newWidth, newHeight);
                 setLocation(newX, newY);
 
-                if(getParent() != null)
-                    getParent().repaint();
-                repaint();
                 //System.out.println(newX + " " + newY + " " + newWidth + " " + newHeight);
             }
             else {
-                ((Timer) e.getSource()).stop(); // Stop the timer when scaling is complete
-                if(getParent() != null)
-                    getParent().repaint();
-                repaint();
+                timer.stop(); // Stop the timer when scaling is complete
+                timer = null;
             }
+            if(getParent() != null)
+                getParent().repaint();
+            repaint();
         });
 
         timer.start();

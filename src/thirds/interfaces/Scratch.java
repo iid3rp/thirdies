@@ -1,4 +1,4 @@
-package thirds.scratch;
+package thirds.interfaces;
 
 import thirds.util.Map;
 
