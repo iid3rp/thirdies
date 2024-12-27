@@ -1,5 +1,6 @@
 package thirds.swing;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 import java.awt.Dimension;
@@ -15,6 +16,12 @@ public class Label extends JLabel
     public Label()
     {
         super();
+        setLayout(null);
+    }
+
+    public Label(ImageIcon imageIcon)
+    {
+        super(imageIcon);
         setLayout(null);
     }
 
@@ -70,17 +77,14 @@ public class Label extends JLabel
                 setSize(newWidth, newHeight);
                 setLocation(newX, newY);
 
-                if(getParent() != null)
-                    getParent().repaint();
-                repaint();
                 //System.out.println(newX + " " + newY + " " + newWidth + " " + newHeight);
             }
             else {
-                ((Timer) e.getSource()).stop(); // Stop the timer when scaling is complete
-                if(getParent() != null)
-                    getParent().repaint();
-                repaint();
+                timer.stop(); // Stop the timer when scaling is complete
             }
+            if(getParent() != null)
+                getParent().repaint();
+            repaint();
         });
 
         timer.start();

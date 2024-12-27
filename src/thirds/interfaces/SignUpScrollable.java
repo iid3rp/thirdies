@@ -2,19 +2,33 @@ package thirds.interfaces;
 
 import thirds.application.SignUpMenu;
 import thirds.io.Debug;
+import thirds.io.ThirdsObjectReader;
 import thirds.swing.MoveableComponent;
+import thirds.user.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class SignUpScrollable
-{
+public class SignUpScrollable {
    public static MoveableComponent panel;
-   static
-   {
+
+   // Text field variables for retrieving input
+   private static JTextField handleNameField;
+   private static JTextField passwordField;
+   private static JTextField secondPasswordField;
+   private static JTextField yearField;
+   private static JTextField monthField;
+   private static JTextField dayField;
+   private static JTextField handleField;
+   private static JTextField atUserField;
+
+   static {
       initializeComponent();
 
       panel.add(createAccountText());
@@ -22,22 +36,29 @@ public class SignUpScrollable
       panel.add(createYYYYText());
       panel.add(createMMText());
       panel.add(createDDText());
-      panel.add(createAtUserText());
       panel.add(createHandleText());
-      panel.add(createAtHuddleUpText());
-      panel.add(createFirstNameTextFieldWithPlaceholder(63, 168));
-      panel.add(createMiddleNameTextFieldWithPlaceholder(63, 219));
-      panel.add(createLastNameTextFieldWithPlaceholder(63, 274));
-      panel.add(createYearTextFieldWithPlaceholder(63, 372));
-      panel.add(createMonthTextFieldWithPlaceholder(119, 372));
-      panel.add(createDayTextFieldWithPlaceholder(156, 372));
-      panel.add(createHandleTextFieldWithPlaceholder(63, 444));
-      panel.add(createAtUserTextFieldWithPlaceholder(63, 505));
+      panel.add(createAtUserText());
+      panel.add(createHuddleUpText());
 
+      // Initialize text fields and add them to the panel
+      handleNameField = createFirstNameTextFieldWithPlaceholder(63, 168);
+      passwordField = createPasswordTextFieldWithPlaceholder(63, 219);
+      secondPasswordField = createAnotherPasswordTextFieldWithPlaceholder(63, 274);
+      yearField = createYearTextFieldWithPlaceholder(63, 372);
+      monthField = createMonthTextFieldWithPlaceholder(119, 372);
+      dayField = createDayTextFieldWithPlaceholder(156, 372);
+      atUserField = createAtUserTextFieldWithPlaceholder(63, 505);
+
+      panel.add(handleNameField);
+      panel.add(passwordField);
+      panel.add(secondPasswordField);
+      panel.add(yearField);
+      panel.add(monthField);
+      panel.add(dayField);
+      panel.add(atUserField);
    }
 
-   private static JLabel createAccountText()
-   {
+   private static JLabel createAccountText() {
       JLabel label = new JLabel();
       label.setText("<html>" +
               "Creating\n<br> " +
@@ -51,8 +72,8 @@ public class SignUpScrollable
       int width = fm.stringWidth(label.getText()) + label.getText().length();
       int height = fm.getHeight();
 
-      for(char s : label.getText().toCharArray())
-         if(s == '\n')
+      for (char s : label.getText().toCharArray())
+         if (s == '\n')
             height += fm.getHeight() + 1; // para ma height lang siya based sa amount of lines
 
       label.setSize(width, height); // width and height.
@@ -107,29 +128,65 @@ public class SignUpScrollable
       label.setBounds(63, 539, 150, 12);
       return label;
    }
-
-   private static JLabel createAtHuddleUpText() {
+   private static JLabel createHuddleUpText() {
       JLabel label = new JLabel("Huddle me up!");
       label.setFont(new Font("Ebrima", Font.BOLD, 16));
       label.setForeground(Color.ORANGE);
       label.setBounds(72, 609, 128, 25);
+      label.addMouseListener(new MouseAdapter() {
+         @Override
+         public void mouseClicked(MouseEvent e) {
+            // Retrieve user input from text fields
+            String firstName = handleNameField.getText();
+            String middleName = passwordField.getText();
+            String lastName = secondPasswordField.getText();
+            String year = yearField.getText();
+            String month = monthField.getText();
+            String day = dayField.getText();
+            String handleName = handleField.getText();
+            String username = atUserField.getText();
+
+            // Construct the full name
+            String fullName = firstName + " " + (middleName.isEmpty() ? "" : middleName + " ") + lastName;
+
+            // Parse the date of birth
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateOfBirth = null;
+            try {
+               dateOfBirth = dateFormat.parse(year + "-" + month + "-" + day);
+            } catch (ParseException ex) {
+               // Handle parsing exception appropriately
+               throw new RuntimeException(ex);
+            }
+
+            // Create a new User object
+            User user = new User();
+            user.setHandleName(handleName.isEmpty() ? fullName : handleName);
+            user.setUsername(username);
+            user.setDateOfBirth(dateOfBirth);
+            // Assuming you have a method to set a default password or prompt the user to create one
+            user.setPassword("defaultPassword");
+
+            // Serialize the user
+            ThirdsObjectReader.serializeUser(user);
+         }
+      });
       return label;
    }
 
-   private static JPanel createFirstNameTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createFirstNameTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
 
-      JTextField textField = new JTextField("First Name");
-      textField.setBounds(0, 0, 271, 29);
+      JTextField textField = new JTextField("Enter Handle Name");
+      textField.setBounds(x, y, 271, 29);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -144,35 +201,33 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("First Name");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createMiddleNameTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createPasswordTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
 
-      JTextField textField = new JTextField("Middle Name");
-      textField.setBounds(0, 0, 271, 29);
+      JTextField textField = new JTextField("Enter Password");
+      textField.setBounds(x, y, 271, 29);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
 
-
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
          public void focusGained(java.awt.event.FocusEvent e) {
-            if (textField.getText().equals("Middle Name")) {
+            if (textField.getText().equals("Enter Password")) {
                textField.setText("");
                textField.setForeground(Color.WHITE);
             }
@@ -181,37 +236,34 @@ public class SignUpScrollable
          @Override
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
-               textField.setText("Middle Name");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
+               textField.setText("Enter Password");
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createLastNameTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createAnotherPasswordTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
 
-      JTextField textField = new JTextField("Last Name");
-      textField.setBounds(0, 0, 271, 29);
+      JTextField textField = new JTextField("Enter Password Again");
+      textField.setBounds(x, y, 271, 29);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-      textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
          public void focusGained(java.awt.event.FocusEvent e) {
-            if (textField.getText().equals("Last Name")) {
+            if (textField.getText().equals("Enter Password Again")) {
                textField.setText("");
                textField.setForeground(Color.WHITE);
             }
@@ -220,31 +272,29 @@ public class SignUpScrollable
          @Override
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
-               textField.setText("Last Name");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
+               textField.setText("Enter Password Again");
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createYearTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createYearTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 38, 21);
       panel.setOpaque(false);
 
       JTextField textField = new JTextField("2001");
-      textField.setBounds(0, 0, 38, 21);
+      textField.setBounds(x, y, 38, 21);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -259,30 +309,28 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("2001");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createMonthTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createMonthTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 18, 21);
       panel.setOpaque(false);
 
       JTextField textField = new JTextField("12");
-      textField.setBounds(0, 0, 18, 21);
+      textField.setBounds(x, y, 18, 21);
       textField.setOpaque(false);
-      textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setBackground(new Color(0,0, 0, 0));
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -297,30 +345,28 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("12");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createDayTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createDayTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 18, 21);
       panel.setOpaque(false);
 
       JTextField textField = new JTextField("31");
-      textField.setBounds(0, 0, 18, 21);
+      textField.setBounds(x, y, 18, 21);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -335,30 +381,28 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("31");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createHandleTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createHandleTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
 
       JTextField textField = new JTextField("Handle Name");
-      textField.setBounds(0, 0, 163, 29);
+      textField.setBounds(x, y, 163, 29);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -373,30 +417,28 @@ public class SignUpScrollable
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
                textField.setText("Handle Name");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-   private static JPanel createAtUserTextFieldWithPlaceholder(int x, int y) {
+   private static JTextField createAtUserTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
       panel.setOpaque(false);
 
       JTextField textField = new JTextField("@username");
-      textField.setBounds(0, 0, 163, 29);
+      textField.setBounds(x, y, 163, 29);
       textField.setOpaque(false);
       textField.setBackground(new Color(0, 0, 0, 0));
-      textField.setForeground(Color.WHITE);
+      textField.setForeground(Color.LIGHT_GRAY);
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
-
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -410,25 +452,20 @@ public class SignUpScrollable
          @Override
          public void focusLost(java.awt.event.FocusEvent e) {
             if (textField.getText().trim().isEmpty()) {
-               textField.setText("Handle Name");
-               textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
+               textField.setText("@username");
                textField.setForeground(Color.LIGHT_GRAY);
             }
          }
       });
 
       panel.add(textField);
-      return panel;
+      return textField; // Return the actual JTextField
    }
 
-
-   private static void initializeComponent()
-   {
-      panel = new MoveableComponent()
-      {
+   private static void initializeComponent() {
+      panel = new MoveableComponent() {
          @Override
-         public void paintComponent(Graphics g)
-         {
+         public void paintComponent(Graphics g) {
             drawOrangeLines(g);
          }
       };
@@ -437,36 +474,28 @@ public class SignUpScrollable
       panel.setSize(450, 675);
       panel.setVisible(true);
 
-      panel.addMouseListener(new MouseAdapter()
-      {
+      panel.addMouseListener(new MouseAdapter() {
          @Override
-         public void mousePressed(MouseEvent e)
-         {
-            if (SwingUtilities.isLeftMouseButton(e))
-            {
+         public void mousePressed(MouseEvent e) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
                SignUpMenu.isDragging = true;
                SignUpMenu.offset = e.getPoint();
-               SignUpMenu.offset.translate(0,panel.getY());
+               SignUpMenu.offset.translate(0, panel.getY());
             }
          }
 
          @Override
-         public void mouseReleased(MouseEvent e)
-         {
-            if (SwingUtilities.isLeftMouseButton(e))
-            {
+         public void mouseReleased(MouseEvent e) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
                SignUpMenu.isDragging = false;
             }
          }
       });
 
-      panel.addMouseMotionListener(new MouseMotionAdapter()
-      {
+      panel.addMouseMotionListener(new MouseMotionAdapter() {
          @Override
-         public void mouseDragged(MouseEvent e)
-         {
-            if (SignUpMenu.isDragging)
-            {
+         public void mouseDragged(MouseEvent e) {
+            if (SignUpMenu.isDragging) {
                Point currentMouse = e.getLocationOnScreen();
 
                int deltaX = currentMouse.x - SignUpMenu.offset.x;
@@ -477,8 +506,7 @@ public class SignUpScrollable
          }
       });
 
-      panel.addMouseWheelListener(e ->
-      {
+      panel.addMouseWheelListener(e -> {
          // Current location of the container panel
          Point currentPoint = panel.getLocation();
 
@@ -495,8 +523,7 @@ public class SignUpScrollable
    }
 
    @Debug
-   public static void main(String[] args)
-   {
+   public static void main(String[] args) {
       JFrame frame = new JFrame();
       frame.setSize(500, 350);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -539,8 +566,6 @@ public class SignUpScrollable
       g2d.fillRect(117, 396, 24, 2); // x, y, width, height
 
       g2d.fillRect(154, 396, 24, 2); // x, y, width, height
-
-      g2d.fillRect(57, 470, 272, 2); // x, y, width, height
 
       g2d.fillRect(57, 533, 272, 2); // x, y, width, height
    }
