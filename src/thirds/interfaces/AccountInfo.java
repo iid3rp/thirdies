@@ -9,10 +9,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * The {@code AccountInfo} class provides a user interface panel displaying account details,
+ * including labels and icons, implemented using Swing components.
+ * This class includes utility methods to initialize and add components.
+ */
 public class AccountInfo {
+
+   /** Background image for the account info panel. */
    private static BufferedImage background;
+
+   /** MoveableComponent instance representing the main panel. */
    private static MoveableComponent panel;
 
+   /**
+    * Static block to initialize the panel and its components.
+    */
    static {
       initializeComponent();
       addLabel("HandleName", 30, 208);
@@ -29,11 +41,20 @@ public class AccountInfo {
       addProfileIcon();
    }
 
-   private AccountInfo()
-   {
+   /**
+    * Private constructor to prevent instantiation of utility class.
+    */
+   private AccountInfo() {
       throw new IllegalStateException("Utility classes should not be instantiated.");
    }
 
+   /**
+    * Adds a label with the specified text and location to the panel.
+    *
+    * @param text The text to display on the label.
+    * @param x    The x-coordinate of the label.
+    * @param y    The y-coordinate of the label.
+    */
    private static void addLabel(String text, int x, int y) {
       JLabel label = new JLabel(text);
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 20));
@@ -48,6 +69,13 @@ public class AccountInfo {
       panel.add(label);
    }
 
+   /**
+    * Adds a gray-colored label to the panel.
+    *
+    * @param text The text to display on the label.
+    * @param x    The x-coordinate of the label.
+    * @param y    The y-coordinate of the label.
+    */
    private static void addLabelGray(String text, int x, int y) {
       JLabel label = new JLabel(text);
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
@@ -61,6 +89,13 @@ public class AccountInfo {
       panel.add(label);
    }
 
+   /**
+    * Adds a red-colored label to the panel.
+    *
+    * @param text The text to display on the label.
+    * @param x    The x-coordinate of the label.
+    * @param y    The y-coordinate of the label.
+    */
    private static void addLabelRed(String text, int x, int y) {
       JLabel label = new JLabel(text);
       label.setFont(new Font("Kantumruy Pro", Font.PLAIN, 16));
@@ -74,6 +109,9 @@ public class AccountInfo {
       panel.add(label);
    }
 
+   /**
+    * Adds a settings icon to the panel.
+    */
    private static void addSettingsIcon() {
       try {
          BufferedImage settingsIcon = ImageIO.read(Resources.getResourceAsStream("settings.png"));
@@ -86,6 +124,9 @@ public class AccountInfo {
       }
    }
 
+   /**
+    * Adds an exit icon to the panel.
+    */
    private static void addExitIcon() {
       try {
          BufferedImage exitIcon = ImageIO.read(Resources.getResourceAsStream("exit.png"));
@@ -98,6 +139,9 @@ public class AccountInfo {
       }
    }
 
+   /**
+    * Adds an edit icon to the panel.
+    */
    private static void addEditIcon() {
       try {
          BufferedImage editIcon = ImageIO.read(Resources.getResourceAsStream("edit.png"));
@@ -110,6 +154,9 @@ public class AccountInfo {
       }
    }
 
+   /**
+    * Adds a profile icon to the panel.
+    */
    private static void addProfileIcon() {
       try {
          BufferedImage profileIcon = ImageIO.read(Resources.getResourceAsStream("circle.png"));
@@ -122,6 +169,9 @@ public class AccountInfo {
       }
    }
 
+   /**
+    * Adds a logout icon to the panel.
+    */
    private static void addLogOutIcon() {
       try {
          BufferedImage logoutIcon = ImageIO.read(Resources.getResourceAsStream("logout.png"));
@@ -134,12 +184,13 @@ public class AccountInfo {
       }
    }
 
+   /**
+    * Initializes the main panel and loads the background image.
+    */
    private static void initializeComponent() {
-      panel = new MoveableComponent()
-      {
+      panel = new MoveableComponent() {
          @Override
-         protected void paintComponent(Graphics g)
-         {
+         protected void paintComponent(Graphics g) {
             g.drawImage(background, 0, 0, panel.getWidth(), panel.getHeight(), null);
          }
       };
@@ -153,11 +204,20 @@ public class AccountInfo {
       panel.setBackground(new Color(184, 141, 29));
    }
 
-   public static MoveableComponent getPanel()
-   {
+   /**
+    * Returns the main panel containing account information.
+    *
+    * @return The {@code MoveableComponent} representing the main panel.
+    */
+   public static MoveableComponent getPanel() {
       return panel;
    }
 
+   /**
+    * Entry point of the program. Displays the account information in a JFrame.
+    *
+    * @param args Command-line arguments (not used).
+    */
    public static void main(String[] args) {
       JFrame frame = new JFrame();
       frame.setSize(320, 720);
