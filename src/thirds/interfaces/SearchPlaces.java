@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AccountInfo2 {
+public class SearchPlaces
+{
     private static BufferedImage background;
     private static MoveableComponent panel;
 
@@ -29,14 +30,12 @@ public class AccountInfo2 {
         addLabel("500 Meters Away", 18, 273);
         addLabel("4.8", 296, 268);
 
-
-
-
         panel.add(createSearchTextFieldWithPlaceholder(41, 36));
+        panel.requestFocusInWindow();
 
     }
 
-    private AccountInfo2()
+    private SearchPlaces()
     {
         throw new IllegalStateException("Utility classes should not be instantiated.");
     }
@@ -93,54 +92,6 @@ public class AccountInfo2 {
         return panel;
     }
 
-    private static void addXIcon() {
-        try {
-            BufferedImage settingsIcon = ImageIO.read(Resources.getResourceAsStream("x.png"));
-            JLabel iconLabel = new JLabel(new ImageIcon(settingsIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
-            iconLabel.setSize(40, 40);
-            iconLabel.setLocation(0, 0);
-            panel.add(iconLabel);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load x icon", e);
-        }
-    }
-
-    private static void addSearchIcon() {
-        try {
-            BufferedImage exitIcon = ImageIO.read(Resources.getResourceAsStream("search.png"));
-            JLabel iconLabel = new JLabel(new ImageIcon(exitIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
-            iconLabel.setSize(40, 40);
-            iconLabel.setLocation(0, 0);
-            panel.add(iconLabel);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load exit icon", e);
-        }
-    }
-
-    private static void addLocationIcon() {
-        try {
-            BufferedImage editIcon = ImageIO.read(Resources.getResourceAsStream("location.png"));
-            JLabel iconLabel = new JLabel(new ImageIcon(editIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
-            iconLabel.setSize(40, 40);
-            iconLabel.setLocation(0, 0);
-            panel.add(iconLabel);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load edit icon", e);
-        }
-    }
-
-    private static void addProfileIcon() {
-        try {
-            BufferedImage profileIcon = ImageIO.read(Resources.getResourceAsStream("profile.png"));
-            JLabel iconLabel = new JLabel(new ImageIcon(profileIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
-            iconLabel.setSize(40, 40);
-            iconLabel.setLocation(0, 0);
-            panel.add(iconLabel);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load profile icon", e);
-        }
-    }
-
     private static void initializeComponent() {
         panel = new MoveableComponent()
         {
@@ -158,6 +109,14 @@ public class AccountInfo2 {
         panel.setLayout(null); // Set null layout for absolute positioning
         panel.setSize(new Dimension(330, 720));
         panel.setBackground(new Color(184, 141, 29));
+        panel.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                panel.requestFocusInWindow();
+            }
+        });
     }
 
     public static MoveableComponent getPanel()

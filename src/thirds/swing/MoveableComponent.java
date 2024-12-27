@@ -33,7 +33,7 @@ public class MoveableComponent extends JPanel
     {
         final double deceleration = 0.95;
 
-        timer = new Timer(5, e -> {
+        timer = new Timer(10, e -> {
 
             int newX = getX() + (int) velocityX;
             int newY = getY() + (int) velocityY;
@@ -103,7 +103,7 @@ public class MoveableComponent extends JPanel
             timer.stop();
         }
 
-        timer = new Timer(5, e ->
+        timer = new Timer(10, e ->
         {
             if(currentStep.get() < totalSteps) {
                 currentStep.getAndIncrement();
@@ -122,17 +122,15 @@ public class MoveableComponent extends JPanel
                 setSize(newWidth, newHeight);
                 setLocation(newX, newY);
 
-                if(getParent() != null)
-                    getParent().repaint();
-                repaint();
                 //System.out.println(newX + " " + newY + " " + newWidth + " " + newHeight);
             }
             else {
-                ((Timer) e.getSource()).stop(); // Stop the timer when scaling is complete
-                if(getParent() != null)
-                    getParent().repaint();
-                repaint();
+                timer.stop(); // Stop the timer when scaling is complete
+                timer = null;
             }
+            if(getParent() != null)
+                getParent().repaint();
+            repaint();
         });
 
         timer.start();
