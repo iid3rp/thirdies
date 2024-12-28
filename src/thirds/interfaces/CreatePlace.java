@@ -12,6 +12,18 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * CreatePlace Class
+ *
+ * This class provides a graphical user interface for creating a "Place" with various attributes, such as name, type, address, and additional information.
+ * It includes features for previewing user input details and uploading images.
+ *
+ * Key Features:
+ * - Input fields for Place Name, Type, Address, and Tags.
+ * - Image upload and preview functionality.
+ * - Real-time updates for previewing entered data.
+ * - Flexible fields for "Extra Information," allowing custom entries.
+ */
 public class CreatePlace {
     private static JLabel previewPlaceName;
     private static JLabel previewImage;
@@ -46,6 +58,10 @@ public class CreatePlace {
         throw new IllegalStateException("Utility class. Not to be instantiated.");
     }
 
+    /**
+     * Initializes the main panel and adds all components.
+     */
+
     private static void initializeComponent() {
         panel.setLayout(null);
         panel.setSize(1000, 720);
@@ -77,7 +93,10 @@ public class CreatePlace {
         panel.add(createStarRatingSection());
 
     }
-
+    /**
+     * Creates and returns the "Return" icon component.
+     * Handles click events to exit the application.
+     */
     private static JLabel returnIcon() 
     {
         try {
@@ -109,13 +128,16 @@ public class CreatePlace {
     }
 
     // Title Section
+    /**
+     * Creates the main title label for the panel.
+     */
     private static JLabel createTitleLabel() {
         JLabel titleLabel = new JLabel("Create Place");
         titleLabel.setFont(new Font("Ebrima", Font.BOLD, 24));
         titleLabel.setBounds(35, 35, 300, 30);
         return titleLabel;
     }
-
+    //preview text
     private static JLabel createPreviewLabel() {
         JLabel titleLabel = new JLabel("'Preview'");
         titleLabel.setFont(new Font("Ebrima", Font.BOLD, 24));
@@ -123,7 +145,7 @@ public class CreatePlace {
         titleLabel.setBounds(785, 665, 300, 30);
         return titleLabel;
     }
-
+    //extra information text
     private static JLabel createExtraInformationLabel() {
         JLabel titleLabel = new JLabel("Extra Information:");
         titleLabel.setFont(new Font("Montserrat", Font.PLAIN, 18));
@@ -153,7 +175,7 @@ public class CreatePlace {
         panel.add(DescriptionArea);
         return panel;
     }
-
+    //Text areas for the description of the place
     private static JTextArea createDescriptionArea()
     {
         JTextArea DescriptionArea = new JTextArea();
@@ -169,6 +191,9 @@ public class CreatePlace {
     }
 
     // Place Name Field
+
+     //Creates the "Place Name" input field with a real-time preview.
+
     private static JPanel createPlaceNameField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(0, 0, 260, 160);
@@ -191,7 +216,7 @@ public class CreatePlace {
         // Initialize the previewPlaceName global label with left alignment and white font color
         previewPlaceName = new JLabel("<html><font color='white'>Place Name</font></html>", SwingConstants.LEFT);
         previewPlaceName.setFont(new Font("Ebrima", Font.BOLD, 30));
-        previewPlaceName.setHorizontalAlignment(SwingConstants.LEFT); // Ensure left alignment
+        previewPlaceName.setHorizontalAlignment(SwingConstants.LEFT); // left alignment
         previewPlaceName.setBounds(690, 108, 260, 100);
         CreatePlace.panel.add(previewPlaceName); // Add to the main panel
 
@@ -212,7 +237,7 @@ public class CreatePlace {
 
         return panel;
     }
-
+     //Creates the place type field
     private static JPanel createPlaceTypeField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(35, 170, 230, 70);
@@ -233,7 +258,7 @@ public class CreatePlace {
         panel.add(placeTypeField);
         return panel;
     }
-
+    //Creates the address field
     private static JPanel createAddressField() {
         JPanel panel = new JPanel(null);
         panel.setBounds(35, 245, 230, 80);

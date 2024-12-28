@@ -14,7 +14,10 @@ import java.awt.event.MouseMotionAdapter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+/**
+ * The SignUpScrollable class provides a graphical user interface (GUI) for signing up users
+ * with fields for username, password, date of birth, and other related information.
+ */
 public class SignUpScrollable {
    public static MoveableComponent panel;
 
@@ -57,7 +60,7 @@ public class SignUpScrollable {
       panel.add(dayField);
       panel.add(atUserField);
    }
-
+   //Creates a label that prompts the user to create an account
    private static JLabel createAccountText() {
       JLabel label = new JLabel();
       label.setText("<html>" +
@@ -81,6 +84,7 @@ public class SignUpScrollable {
       return label;
    }
 
+   //Creates a label displaying the text "Date of Birth".
    private static JLabel createDOBText() {
       JLabel label = new JLabel("Date of Birth");
       label.setFont(new Font("Ebrima", Font.BOLD, 16));
@@ -89,6 +93,7 @@ public class SignUpScrollable {
       return label;
    }
 
+   //Creates a label displaying the "yyyy" text for the year field.
    private static JLabel createYYYYText() {
       JLabel label = new JLabel("yyyy");
       label.setFont(new Font("Ebrima", Font.PLAIN, 12));
@@ -121,6 +126,7 @@ public class SignUpScrollable {
       return label;
    }
 
+ //  Creates a label displaying a message regarding the user's username.
    private static JLabel createAtUserText() {
       JLabel label = new JLabel("your username is good!");
       label.setFont(new Font("Ebrima", Font.PLAIN, 10));
@@ -128,6 +134,14 @@ public class SignUpScrollable {
       label.setBounds(63, 539, 150, 12);
       return label;
    }
+
+
+   /**
+    * Creates a label with the text "Huddle me up!" that listens for mouse clicks to
+    * trigger the user sign-up process.
+    *
+    * @return JLabel with the "Huddle me up!" text.
+    */
    private static JLabel createHuddleUpText() {
       JLabel label = new JLabel("Huddle me up!");
       label.setFont(new Font("Ebrima", Font.BOLD, 16));
@@ -174,6 +188,15 @@ public class SignUpScrollable {
       return label;
    }
 
+   /**
+    * Creates a text field with a placeholder text at a specific location.
+    *
+    *  The x-coordinate for the text field.
+    *  The y-coordinate for the text field.
+    *  The placeholder text.
+    * @return The created JTextField.
+    */
+
    private static JTextField createFirstNameTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
@@ -187,6 +210,8 @@ public class SignUpScrollable {
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
       textField.setFont(new Font("Ebrima", Font.PLAIN, 16));
+
+      // Change text color when user types
 
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
@@ -245,7 +270,7 @@ public class SignUpScrollable {
       panel.add(textField);
       return textField; // Return the actual JTextField
    }
-
+//Creates a JTextField for confirming the password entry, with a placeholder text that disappears when the user focuses on the field.
    private static JTextField createAnotherPasswordTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 163, 29);
@@ -548,7 +573,7 @@ public class SignUpScrollable {
       g2d.drawLine(x1, y1, x2, y2); // Top-left to bottom-right
       g2d.drawLine(x1, y2, x2, y1); // Bottom-left to top-right
    }
-
+  //drawing more ui components
    private static void drawOrangeLines(Graphics g) {
       Graphics2D g2d = (Graphics2D) g;
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

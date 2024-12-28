@@ -1,3 +1,17 @@
+/**
+ * SignUpScreen Class
+ * ------------------
+ * This class provides a graphical user interface for a Sign-Up screen. It includes interactive components to guide the user
+ * through the process of entering an email address and proceeding to the next step. The panel is styled with a modern design
+ * and supports smooth transitions between screens.
+ *
+ * Key Features:
+ * - Displays a sign-up title and instructions.
+ * - Includes a placeholder-enabled email text field.
+ * - Interactive labels trigger panel transitions upon clicking.
+ * - Custom orange line is drawn as a design element.
+ * - The main panel is movable for smooth navigation.
+ */
 package thirds.interfaces;
 
 import thirds.swing.MoveableComponent;
@@ -9,6 +23,8 @@ import java.awt.event.MouseEvent;
 
 public class SignUpScreen
 {
+   // Main movable panel for the Sign-Up screen.
+
    public static MoveableComponent panel;
 
    static
@@ -22,7 +38,13 @@ public class SignUpScreen
       panel.add(createInstructText2());
       panel.add(createEmailTextFieldWithPlaceholder(51, 197));
    }
-
+   /**
+    * Creates an email text field with placeholder functionality.
+    *
+    * @param x X-coordinate of the text field.
+    * @param y Y-coordinate of the text field.
+    * @return A JPanel containing the text field.
+    */
    private static JPanel createEmailTextFieldWithPlaceholder(int x, int y) {
       JPanel panel = new JPanel(null);
       panel.setBounds(x, y, 271, 29);
@@ -36,6 +58,8 @@ public class SignUpScreen
       textField.setBorder(BorderFactory.createEmptyBorder());
       textField.setHorizontalAlignment(SwingConstants.LEFT);
 
+
+      // Placeholder behavior on focus events.
       textField.addFocusListener(new java.awt.event.FocusListener() {
          @Override
          public void focusGained(java.awt.event.FocusEvent e) {
@@ -58,6 +82,13 @@ public class SignUpScreen
       return panel;
    }
 
+   /**
+    * Creates the first line of instruction text.
+    *
+    * @return A JLabel containing the text.
+    */
+
+   //lines of instruction test
    private static JLabel createInstructText() {
       return createTextLabel("Start with your email. We", 50, 116);
    }
@@ -70,6 +101,8 @@ public class SignUpScreen
       return createTextLabel("get started.", 50, 161);
    }
 
+
+   //Creates the "Sign Up" title label.
    private static JLabel createWelcomeText() {
       JLabel label = new JLabel("Sign Up");
       label.setFont(new Font("Ebrima", Font.BOLD, 35));
@@ -77,6 +110,15 @@ public class SignUpScreen
       label.setBounds(50, 50, 400, 40);
       return label;
    }
+
+   /**
+    * Creates a generic text label with specified text and position.
+    *
+    * @param text The text to display.
+    * @param x    X-coordinate of the label.
+    * @param y    Y-coordinate of the label.
+    * @return A JLabel containing the specified text.
+    */
 
    private static JLabel createTextLabel(String text, int x, int y) {
       JLabel label = new JLabel(text);
@@ -96,6 +138,9 @@ public class SignUpScreen
       return label;
    }
 
+   /**
+    * Initializes the main panel and sets its size and properties.
+    */
    private static void initializeComponent() {
       panel = new MoveableComponent()
       {
@@ -116,6 +161,7 @@ public class SignUpScreen
       g2d.fillRect(50, 224, 272, 2); // Line coordinates and size
    }
 
+ //  Main method to run the Sign-Up screen.
 
    public static void main(String[] args) {
       JFrame frame = new JFrame("Sign Up Screen");
